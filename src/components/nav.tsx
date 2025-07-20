@@ -15,6 +15,7 @@ function Nav() {
   // Nav Pages List to use in Mobile Nav and Desktop Nav
   const NAV_PAGES_LIST = [
     { href: "/", name: "Inicio", reload: false },
+    { href: "/games", name: "Juegos", reload: false },
   ];
   // Execute this use effect to close the menu when clicking outside it
   useEffect(() => {

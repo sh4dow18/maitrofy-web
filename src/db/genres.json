@@ -1,0 +1,117 @@
+[
+  {
+    "id": 31,
+    "slug": "adventure",
+    "name": "Aventura"
+  },
+  {
+    "id": 33,
+    "slug": "arcade",
+    "name": "Arcade"
+  },
+  {
+    "id": 35,
+    "slug": "card-and-board-game",
+    "name": "Tarjeta & Tablero Juego"
+  },
+  {
+    "id": 4,
+    "slug": "fighting",
+    "name": "Luchando"
+  },
+  {
+    "id": 25,
+    "slug": "hack-and-slash-beat-em-up",
+    "name": "Hack y slash / Beat 'em up"
+  },
+  {
+    "id": 32,
+    "slug": "indie",
+    "name": "Indie"
+  },
+  {
+    "id": 36,
+    "slug": "moba",
+    "name": "MOBA"
+  },
+  {
+    "id": 7,
+    "slug": "music",
+    "name": "Música"
+  },
+  {
+    "id": 30,
+    "slug": "pinball",
+    "name": "Pinball"
+  },
+  {
+    "id": 8,
+    "slug": "platform",
+    "name": "Plataforma"
+  },
+  {
+    "id": 2,
+    "slug": "point-and-click",
+    "name": "Punto y clic"
+  },
+  {
+    "id": 9,
+    "slug": "puzzle",
+    "name": "Puzzle"
+  },
+  {
+    "id": 26,
+    "slug": "quiz-trivia",
+    "name": "Quiz/Trivia"
+  },
+  {
+    "id": 10,
+    "slug": "racing",
+    "name": "Carreras"
+  },
+  {
+    "id": 11,
+    "slug": "real-time-strategy-rts",
+    "name": "Estrategia en tiempo real (RTS)"
+  },
+  {
+    "id": 12,
+    "slug": "role-playing-rpg",
+    "name": "Role-playing (RPG)"
+  },
+  {
+    "id": 5,
+    "slug": "shooter",
+    "name": "Tirador"
+  },
+  {
+    "id": 13,
+    "slug": "simulator",
+    "name": "Simulador"
+  },
+  {
+    "id": 14,
+    "slug": "sport",
+    "name": "Deporte"
+  },
+  {
+    "id": 15,
+    "slug": "strategy",
+    "name": "Estrategia"
+  },
+  {
+    "id": 24,
+    "slug": "tactical",
+    "name": "Tactical"
+  },
+  {
+    "id": 16,
+    "slug": "turn-based-strategy-tbs",
+    "name": "Estrategia basada en la curva (TBS)"
+  },
+  {
+    "id": 34,
+    "slug": "visual-novel",
+    "name": "Novela visual"
+  }
+]

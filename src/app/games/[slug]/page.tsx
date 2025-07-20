@@ -1,9 +1,10 @@
 // Game Content Page Requirements
-import { GameOverview, NotFound } from "@/components";
+import { GameOverview, NotFound, Slider } from "@/components";
 import {
   FindGameBySlug,
   FindGenresFromGame,
   FindPlatformsFromGame,
+  FindRecomendationsFromGame,
   FindThemesFromGame,
 } from "@/lib/games";
 import { Metadata } from "next";
@@ -32,8 +33,16 @@ async function GameContentPage({ params }: Props) {
   const { slug } = await params;
   // Game Content Page Constants
   const CONTENT = await FindGameBySlug(slug);
+  const COLLECTION = CONTENT ? CONTENT.collection : null;
+  const DEVELOPER = CONTENT ? CONTENT.developer : null;
+  const THEMES = CONTENT ? CONTENT.themes[0] : null;
+  const RECOMENDATIONS_LIST =
+    THEMES !== null
+      ? FindRecomendationsFromGame(slug, COLLECTION, DEVELOPER, THEMES)
+      : [];
   // Returns Game Content Page
-  return CONTENT !== undefined ? ( // Game Content Main Container
+  return CONTENT !== undefined ? (
+    // Game Content Main Container
     <div className="flex flex-col gap-3 p-10 max-w-4xl min-[897px]:mx-auto">
       <GameOverview
         title={CONTENT.name}
@@ -46,9 +55,15 @@ async function GameContentPage({ params }: Props) {
         overview={CONTENT.summary}
         rating={CONTENT.rating}
         classification={CONTENT.classification}
+        developer={CONTENT.developer}
+        story={CONTENT.story}
+        gameMode={CONTENT.gameMode}
         trailer={CONTENT.video}
         note={null}
       />
+      {RECOMENDATIONS_LIST.length > 0 && (
+        <Slider title="Recomendaciones" contentList={RECOMENDATIONS_LIST} />
+      )}
     </div>
   ) : (
     <NotFound

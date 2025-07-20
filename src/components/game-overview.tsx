@@ -1,4 +1,5 @@
 // Game Overview Requirements
+import { PlusIcon } from "@heroicons/react/16/solid";
 import Image from "./image";
 import Stars from "./stars";
 import YoutubeVideo from "./youtube-video";
@@ -14,6 +15,9 @@ interface Props {
   overview: string;
   rating: number;
   classification: string | null;
+  developer: string;
+  gameMode: string | null | undefined;
+  story: string | null;
   trailer: string | null;
   note: string | null;
 }
@@ -29,6 +33,9 @@ function GameOverview({
   overview,
   rating,
   classification,
+  developer,
+  gameMode,
+  story,
   trailer,
   note,
 }: Props) {
@@ -62,10 +69,11 @@ function GameOverview({
           {/* Game Overview Button Container */}
           <div className="mt-auto">
             <button
-              className="flex items-center justify-center bg-gray-300 text-xl py-2 px-5 rounded-sm text-gray-900 font-semibold w-full"
+              className="flex gap-1 items-center justify-center bg-gray-300 text-xl py-2 px-5 rounded-sm text-gray-900 font-semibold w-full"
               disabled
             >
-              Agregar
+              <PlusIcon className="w-6 h-6" />
+              <span>Agregar</span>
             </button>
           </div>
         </div>
@@ -76,29 +84,6 @@ function GameOverview({
         <h1 className="text-4xl text-center leading-14 font-bold text-gray-300 min-[351px]:text-5xl min-[600px]:text-4xl min-[600px]:text-left min-[600px]:leading-12">
           {title} ({date})
         </h1>
-        <div className="flex flex-col gap-5 min-[477px]:flex-row min-[477px]:flex-wrap min-[477px]:items-center">
-          {/* Game Overview Extra Information Themes Section */}
-          <section className="flex flex-col gap-2">
-            {/* Game Overview Extra Information Themes Title */}
-            <span className="font-semibold text-gray-300">Temas</span>
-            {/* Game Overview Extra Information Themes */}
-            <span>{themes !== "" ? themes : "N/A"}</span>
-          </section>
-          {/* Game Overview Extra Information Genres Section */}
-          <section className="flex flex-col gap-2 min-[477px]:ml-5">
-            {/* Game Overview Extra Information Genres Title */}
-            <span className="font-semibold text-gray-300">Géneros</span>
-            {/* Game Overview Extra Information Genres */}
-            <span>{genres !== "" ? genres : "N/A"}</span>
-          </section>
-          {/* Game Overview Extra Information Platforms Section */}
-          <section className="flex flex-col gap-2">
-            {/* Game Overview Extra Information Platforms Title */}
-            <span className="font-semibold text-gray-300">Plataformas</span>
-            {/* Game Overview Extra Information Platforms */}
-            <span>{platforms !== "" ? platforms : "N/A"}</span>
-          </section>
-        </div>
         {/* Game Overview Description Second Container */}
         <section className="flex flex-col gap-1">
           {/* Game Overview Description Title */}
@@ -106,6 +91,15 @@ function GameOverview({
           {/* Game Overview Description Paragraph */}
           <p className="leading-7 hyphens-auto">{overview}</p>
         </section>
+        {story !== null && (
+          // Game Overview Description Story Container
+          <section className="flex flex-col gap-1">
+            {/* Game Overview Description Story Title */}
+            <span className="font-semibold text-gray-300">Historia</span>
+            {/* Game Overview Description Story Paragraph */}
+            <p className="leading-7 hyphens-auto">{story}</p>
+          </section>
+        )}
         {/* Game Overview Extra Information Container */}
         <div className="flex flex-col gap-3 min-[477px]:flex-row min-[477px]:flex-wrap min-[477px]:items-center">
           {/* Game Overview Extra Information Rating Section */}
@@ -114,9 +108,9 @@ function GameOverview({
             <span className="font-semibold text-gray-300">Valoración</span>
             {/* Game Overview Extra Information Rating Stars */}
             <div className="flex items-center">
-              <Stars count={5} size={30} value={rating / 2} />
+              <Stars count={5} size={30} value={rating} />
               <span className="hidden text-lg font-semibold ml-2 mt-1 min-[352px]:block">
-                ({rating / 2})
+                ({rating})
               </span>
             </div>
           </section>
@@ -127,8 +121,45 @@ function GameOverview({
             {/* Game Overview Extra Information Clasification */}
             <span>{classification}</span>
           </section>
+          {/* Game Overview Extra Information Developer Section */}
+          <section className="flex flex-col gap-2 min-[477px]:ml-5">
+            {/* Game Overview Extra Information Developer Title */}
+            <span className="font-semibold text-gray-300">Desarrollador</span>
+            {/* Game Overview Extra Information Developer */}
+            <span>{developer}</span>
+          </section>
         </div>
       </section>
+      <div className="flex flex-col gap-5 min-[477px]:flex-row min-[477px]:flex-wrap min-[477px]:items-center">
+        {/* Game Overview Extra Information Game Mode Section */}
+        <section className="flex flex-col gap-2">
+          {/* Game Overview Extra Information Game Mode Title */}
+          <span className="font-semibold text-gray-300">Modo de Juego</span>
+          {/* Game Overview Extra Information Game Mode */}
+          <span>{typeof gameMode === "string" ? gameMode : "N/A"}</span>
+        </section>
+        {/* Game Overview Extra Information Themes Section */}
+        <section className="flex flex-col gap-2">
+          {/* Game Overview Extra Information Themes Title */}
+          <span className="font-semibold text-gray-300">Temas</span>
+          {/* Game Overview Extra Information Themes */}
+          <span>{themes !== "" ? themes : "N/A"}</span>
+        </section>
+        {/* Game Overview Extra Information Genres Section */}
+        <section className="flex flex-col gap-2">
+          {/* Game Overview Extra Information Genres Title */}
+          <span className="font-semibold text-gray-300">Géneros</span>
+          {/* Game Overview Extra Information Genres */}
+          <span>{genres !== "" ? genres : "N/A"}</span>
+        </section>
+        {/* Game Overview Extra Information Platforms Section */}
+        <section className="flex flex-col gap-2">
+          {/* Game Overview Extra Information Platforms Title */}
+          <span className="font-semibold text-gray-300">Plataformas</span>
+          {/* Game Overview Extra Information Platforms */}
+          <span>{platforms}</span>
+        </section>
+      </div>
       {note && note !== null && (
         // Game Overview Note Section
         <section>

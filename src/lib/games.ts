@@ -38,3 +38,34 @@ export function FindPlatformsFromGame(platformsIdsList: number[]) {
     .map((platform) => platform.name)
     .join(", ");
 }
+// Find Recommendations from Game with ids list
+export function FindRecomendationsFromGame(
+  slug: string,
+  collection: string | null,
+  developer: string | null,
+  theme: number
+) {
+  const COLLECTIONS_LIST =
+    collection !== null
+      ? gamesList.filter((game) => game.collection === collection && game.slug !== slug)
+      : [];
+  const DEVELOPERS_LIST =
+    developer !== null
+      ? gamesList.filter((game) => game.developer === developer && game.slug !== slug)
+      : [];
+  const THEMES_LIST = gamesList.filter(
+    (game) => game.themes[0] === theme && game.slug !== slug
+  )
+  const COMBINED_LIST = [...COLLECTIONS_LIST, ...DEVELOPERS_LIST, ...THEMES_LIST];
+  const UNIQUE_GAMES_MAP = new Map<string, typeof gamesList[number]>();
+  for (const game of COMBINED_LIST) {
+    if (!UNIQUE_GAMES_MAP.has(game.slug)) {
+      UNIQUE_GAMES_MAP.set(game.slug, game);
+    }
+  }
+  const NEW_LIST = Array.from(UNIQUE_GAMES_MAP.values()).slice(0, 15);
+  return NEW_LIST.map((game) => ({
+    cover: game.cover,
+    slug: game.slug,
+  }));
+}

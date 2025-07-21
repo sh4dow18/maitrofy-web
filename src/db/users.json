@@ -1,0 +1,102 @@
+[
+  {
+    "email": "sh4dow18@maitrofy.com",
+    "password": "Maitrofy1#",
+    "name": "sh4dow18",
+    "createdDate": "20/07/2025",
+    "rol": "Administrador",
+    "status": true,
+    "gamesList": [
+      {
+        "game": "infamous",
+        "achievement": 3,
+        "platform": "ps3",
+        "rating": 7.9
+      },
+      {
+        "game": "marvels-spider-man-remastered",
+        "achievement": 1,
+        "platform": "win",
+        "rating": 7.4
+      },
+      {
+        "game": "castle-of-illusion-starring-mickey-mouse--1",
+        "achievement": 1,
+        "platform": "win",
+        "rating": 7.9
+      },
+      {
+        "game": "mega-man-x",
+        "achievement": 1,
+        "platform": "snes",
+        "rating": 9.6
+      },
+      {
+        "game": "crash-bandicoot",
+        "achievement": 5,
+        "platform": "ps",
+        "rating": 8.8
+      },
+      {
+        "game": "uncharted-drakes-fortune-remastered",
+        "achievement": 5,
+        "platform": "ps4--1",
+        "rating": 8.4
+      },
+      {
+        "game": "god-of-war",
+        "achievement": 5,
+        "platform": "ps3",
+        "rating": 7.9
+      },
+      {
+        "game": "days-gone",
+        "achievement": 3,
+        "platform": "ps5",
+        "rating": 8.03
+      },
+      {
+        "game": "astros-playroom",
+        "achievement": 5,
+        "platform": "ps5",
+        "rating": 9.1
+      },
+      {
+        "game": "marvels-spider-man-miles-morales",
+        "achievement": 5,
+        "platform": "ps5",
+        "rating": 7.4
+      },
+      {
+        "game": "resident-evil-3",
+        "achievement": 5,
+        "platform": "ps4--1",
+        "rating": 7.5
+      },
+      {
+        "game": "grand-theft-auto-v--2",
+        "achievement": 1,
+        "platform": "ps5",
+        "rating": 7.9
+      },
+      {
+        "game": "pokemon-white-version",
+        "achievement": 2,
+        "platform": "nds",
+        "rating": 8.1
+      },
+      {
+        "game": "super-smash-bros-brawl",
+        "achievement": 3,
+        "platform": "wii",
+        "rating": 8.7
+      },
+      {
+        "game": "infamous-2",
+        "achievement": null,
+        "platform": "ps3",
+        "rating": null
+      }
+    ]
+  }
+]

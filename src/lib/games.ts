@@ -17,28 +17,28 @@ export function FindGameByName(name: string) {
 export function FindGameBySlug(slug: string) {
   return gamesList.find((game) => game.slug === slug);
 }
-// Find Themes from Game with ids list
+// Find Themes from Game with ids list Function
 export function FindThemesFromGame(themesIdsList: number[]) {
   return themesList
     .filter((theme) => themesIdsList.includes(theme.id))
     .map((theme) => theme.name)
     .join(", ");
 }
-// Find Genres from Game with ids list
+// Find Genres from Game with ids list Function
 export function FindGenresFromGame(genresIdsList: number[]) {
   return genresList
     .filter((genre) => genresIdsList.includes(genre.id))
     .map((genre) => genre.name)
     .join(", ");
 }
-// Find Platforms from Game with ids list
+// Find Platforms from Game with ids list Function
 export function FindPlatformsFromGame(platformsIdsList: number[]) {
   return platformsList
     .filter((platform) => platformsIdsList.includes(platform.id))
     .map((platform) => platform.name)
     .join(", ");
 }
-// Find Recommendations from Game with ids list
+// Find Recommendations from Game with ids list Function
 export function FindRecomendationsFromGame(
   slug: string,
   collection: string | null,
@@ -68,4 +68,8 @@ export function FindRecomendationsFromGame(
     cover: game.cover,
     slug: game.slug,
   }));
+}
+// Find Games By Slugs with ids list Function
+export function FindGamesBySlugIds(slugsList: string[]) {
+  return gamesList.filter(game => slugsList.includes(game.slug))
 }

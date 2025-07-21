@@ -15,3 +15,8 @@
 .mask-image {
   mask-image: linear-gradient(black 85%, transparent);
 }
+/* Change Autocomplete styles in Chrome */
+input:-webkit-autofill {
+  -webkit-text-fill-color: white;
+  transition: background-color 5000s ease-in-out 0s;
+}

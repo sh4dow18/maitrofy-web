@@ -1,0 +1,27 @@
+[
+  {
+    "id": 1,
+    "name": "Completado",
+    "value": 1
+  },
+  {
+    "id": 2,
+    "name": "Platino Offline",
+    "value": 2
+  },
+  {
+    "id": 3,
+    "name": "PsicoPlatino",
+    "value": 3
+  },
+  {
+    "id": 4,
+    "name": "PseudoPlatino",
+    "value": 4
+  },
+  {
+    "id": 5,
+    "name": "Platino",
+    "value": 4
+  }
+]

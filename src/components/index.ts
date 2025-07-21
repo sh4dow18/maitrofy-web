@@ -1,6 +1,9 @@
+export { default as Form } from "./form";
 export { default as GameOverview } from "./game-overview";
 export { default as Image } from "./image";
+export { default as Input } from "./input";
 export { default as Light } from "./light";
+export { default as Modal } from "./modal";
 export { default as Nav } from "./nav";
 export { default as NotFound } from "./not-found";
 export { default as Search } from "./search";

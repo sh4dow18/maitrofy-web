@@ -1,3 +1,4 @@
+// Set this page as a client page
 "use client";
 // Profile Page Requirements
 import { Image } from "@/components";

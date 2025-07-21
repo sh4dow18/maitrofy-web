@@ -1,10 +1,12 @@
 // User Library Requirements
 import usersList from "@/db/users.json";
 import achievementsList from "@/db/achievements.json";
+import gamesList from "@/db/games.json";
 import { FindGameBySlug, FindGamesBySlugIds } from "./games";
 import { FindThemeNameById } from "./themes";
 import { FindGenreNameById } from "./genres";
 import { FindPlatformNameBySlug } from "./platforms";
+import { FindAchievementNameById } from "./achievements";
 // Get User Information Function
 export function GetUser(email: string) {
   // Find User
@@ -71,7 +73,7 @@ export function GetUser(email: string) {
       return FOUND ? sum + FOUND.value : sum;
     }, 0);
   };
-  // Function that allows to get the user user level
+  // Function that allows to get the user level
   const GetUserLevel = (email: string) => {
     const POINTS = GetUserPoints(email);
     if (POINTS === "-") {
@@ -147,4 +149,55 @@ export function GetUser(email: string) {
       ).map((game) => game.gameMode)
     ),
   };
+}
+// Function that allows to get the user backlog
+export function GetUserBacklog(email: string) {
+  // Find User
+  const USER = usersList.find((user) => user.email === email);
+  if (USER === undefined) {
+    return [];
+  }
+  // Get Ordered Games List
+  const ORDERED_GAMES_LIST = USER.gamesList.map((item) => item.game);
+  // Generate the User Backlog
+  const USER_BACKLOG = USER.gamesList
+    .map((entry) => {
+      // Find Game
+      const GAME = gamesList.find((g) => g.slug === entry.game);
+      if (GAME === undefined) {
+        return null;
+      }
+      // Get Achievement as Number
+      const ACHIEVEMENT = entry.achievement !== null ? entry.achievement : 0;
+      // Return Backlog
+      return {
+        game: {
+          slug: GAME.slug,
+          cover: GAME.cover,
+          name: GAME.name,
+        },
+        achievement: FindAchievementNameById(ACHIEVEMENT),
+        platform: FindPlatformNameBySlug(entry.platform),
+        rating: entry.rating,
+        date: entry.date,
+      };
+    })
+    // Get all not-null objects
+    .filter(Boolean) as {
+    game: {
+      slug: string;
+      cover: string;
+      name: string;
+    };
+    achievement: string;
+    platform: string;
+    rating: number | null;
+    date: string | null;
+  }[];
+  // Return User Backlog Sorted by Slug
+  return USER_BACKLOG.sort(
+    (a, b) =>
+      ORDERED_GAMES_LIST.indexOf(a!.game.slug) -
+      ORDERED_GAMES_LIST.indexOf(b!.game.slug)
+  );
 }

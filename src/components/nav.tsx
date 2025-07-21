@@ -20,6 +20,7 @@ function Nav() {
   const NAV_PAGES_LIST = [
     { href: "/", name: "Inicio", reload: false },
     { href: "/games", name: "Juegos", reload: false },
+    { href: "/backlog", name: "Mi Trayectoria", reload: false },
   ];
   // Execute this use effect to close the menu when clicking outside it
   useEffect(() => {

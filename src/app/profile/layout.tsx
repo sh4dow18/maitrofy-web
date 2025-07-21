@@ -5,7 +5,7 @@ export const metadata: Metadata = {
   title: "Perfil",
   description: "Aquí se podrá ver toda la información del perfil del usuario",
 };
-// Admin Layout Main Function
+// Profile Layout Main Function
 export default function ProfileLayout({
   children,
 }: {

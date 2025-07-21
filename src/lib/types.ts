@@ -22,4 +22,15 @@ export type User = {
   favoriteCollection: string;
   favoriteDeveloper: string;
   favoriteGameMode: string;
-}
+};
+export type GameLog = {
+  game: {
+    slug: string;
+    cover: string;
+    name: string;
+  };
+  achievement: string;
+  platform: string;
+  rating: number | null;
+  date: string | null;
+};

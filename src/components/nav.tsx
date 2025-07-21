@@ -3,7 +3,11 @@
 // Nav Requirements
 import { useEffect, useRef, useState } from "react";
 import { usePathname } from "next/navigation";
-import { Bars3Icon, XMarkIcon } from "@heroicons/react/16/solid";
+import {
+  Bars3Icon,
+  UserCircleIcon,
+  XMarkIcon,
+} from "@heroicons/react/16/solid";
 import Link from "next/link";
 import MainLogo from "./main-logo";
 // Nav Main Function
@@ -45,9 +49,7 @@ function Nav() {
     <nav>
       <div
         ref={menuRef}
-        className={`p-2 grid grid-cols-3 items-center relative min-[1035px]:flex min-[1035px]:px-6 ${
-          open ? "bg-gray-900" : "bg-gray-950"
-        }`}
+        className="p-2 grid grid-cols-3 gap-10 items-center relative min-[1035px]:flex min-[1035px]:px-6"
       >
         {/* Burger Menu Button to Mobile Nav */}
         <button
@@ -99,6 +101,10 @@ function Nav() {
             )
           )}
         </div>
+        {/* Profile Link */}
+        <Link href="/profile" className="ml-auto flex gap-5">
+          <UserCircleIcon className="w-7 h-7 mr-2 cursor-pointer transition-all fill-white hover:scale-125" />
+        </Link>
       </div>
       {/* Mobile Nav */}
       <div

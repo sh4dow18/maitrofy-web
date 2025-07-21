@@ -7,7 +7,7 @@ import { default as NextImage } from "next/image";
 interface Props {
   src: string;
   alt: string;
-  skeleton: "cover" | "background";
+  skeleton: "cover" | "background" | "profile";
   className?: string;
   width?: number;
   height?: number;
@@ -25,7 +25,7 @@ function Image({
   fill,
   priority,
 }: Props) {
-  // images Hooks
+  // Image Hooks
   const [loaded, SetLoaded] = useState(false);
   // Return Image Component
   return (
@@ -33,7 +33,7 @@ function Image({
       {/* If the image has not loaded, place the skeleton image. */}
       {loaded === false && (
         <NextImage
-          src={`/skeletons/${skeleton}.jpg`}
+          src={`/skeletons/${skeleton}.webp`}
           alt={alt}
           width={width}
           height={height}

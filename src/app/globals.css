@@ -11,3 +11,7 @@
   font-family: "inter";
   src: url(/fonts/Inter.ttf) format("truetype");
 }
+/* Mask Image Class */
+.mask-image {
+  mask-image: linear-gradient(black 85%, transparent);
+}

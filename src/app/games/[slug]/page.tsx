@@ -23,7 +23,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return {
     title: EXISTING_GAME ? TITLE : "No Encontrado",
     description: EXISTING_GAME
-      ? `Aqui se pueden encontrar toda la información referente a la película '${TITLE}'`
+      ? `Aqui se pueden encontrar toda la información referente al juego '${TITLE}'`
       : "No Encontrado",
   };
 }
@@ -59,7 +59,6 @@ async function GameContentPage({ params }: Props) {
         story={CONTENT.story}
         gameMode={CONTENT.gameMode}
         trailer={CONTENT.video}
-        note={null}
       />
       {RECOMENDATIONS_LIST.length > 0 && (
         <Slider title="Recomendaciones" contentList={RECOMENDATIONS_LIST} />

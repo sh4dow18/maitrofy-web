@@ -34,3 +34,21 @@ export type GameLog = {
   rating: number | null;
   date: string | null;
 };
+export type Game = {
+  name: string;
+  summary: string;
+  cover: string;
+  background: string | null;
+  rating: number;
+  classification: string | null;
+  year: string;
+  slug: string;
+  video: string | null;
+  genres: number[];
+  platforms: number[];
+  themes: number[];
+  collection: string | null;
+  developer: string;
+  story: string | null;
+  gameMode?: string | null;
+};

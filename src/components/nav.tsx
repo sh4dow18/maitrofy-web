@@ -10,18 +10,28 @@ import {
 } from "@heroicons/react/16/solid";
 import Link from "next/link";
 import MainLogo from "./main-logo";
+import { GetJWT } from "@/lib/session";
 // Nav Main Function
 function Nav() {
   // Nav Hooks
   const [open, SetOpen] = useState<boolean>(false);
+  const [auth, SetAuth] = useState<boolean>(false);
   const menuRef = useRef<HTMLDivElement>(null);
   const CURRENT_PAGE = usePathname();
   // Nav Pages List to use in Mobile Nav and Desktop Nav
   const NAV_PAGES_LIST = [
-    { href: "/", name: "Inicio", reload: false },
-    { href: "/games", name: "Juegos", reload: false },
-    { href: "/backlog", name: "Mi Trayectoria", reload: false },
+    { href: "/", name: "Inicio", reload: false, auth: false },
+    { href: "/games", name: "Juegos", reload: false, auth: false },
+    { href: "/backlog", name: "Mi Trayectoria", reload: false, auth: true },
   ];
+  // Execute this use effect when page is loading
+  useEffect(() => {
+    const EMAIL = GetJWT();
+    if (EMAIL === undefined) {
+      return;
+    }
+    SetAuth(true);
+  }, []);
   // Execute this use effect to close the menu when clicking outside it
   useEffect(() => {
     const ClickOutside = (event: MouseEvent) => {
@@ -74,32 +84,34 @@ function Nav() {
         </Link>
         {/* Desktop Nav */}
         <div className="hidden min-[1035px]:block">
-          {NAV_PAGES_LIST.map((page) =>
-            page.reload === true ? (
-              <a
-                key={page.href}
-                href={page.href}
-                className={`font-medium mx-2 px-3 py-2 rounded-md select-none ${
-                  CURRENT_PAGE === page.href
-                    ? "bg-gray-800 text-white"
-                    : "text-gray-300 hover:text-white hover:bg-gray-700"
-                }`}
-              >
-                {page.name}
-              </a>
-            ) : (
-              <Link
-                key={page.href}
-                href={page.href}
-                className={`font-medium mx-2 px-3 py-2 rounded-md select-none ${
-                  CURRENT_PAGE === page.href
-                    ? "bg-gray-800 text-white"
-                    : "text-gray-300 hover:text-white hover:bg-gray-700"
-                }`}
-              >
-                {page.name}
-              </Link>
-            )
+          {NAV_PAGES_LIST.map(
+            (page) =>
+              ((page.auth === true && auth === true) || page.auth === false) &&
+              (page.reload === true ? (
+                <a
+                  key={page.href}
+                  href={page.href}
+                  className={`font-medium mx-2 px-3 py-2 rounded-md select-none ${
+                    CURRENT_PAGE === page.href
+                      ? "bg-gray-800 text-white"
+                      : "text-gray-300 hover:text-white hover:bg-gray-700"
+                  }`}
+                >
+                  {page.name}
+                </a>
+              ) : (
+                <Link
+                  key={page.href}
+                  href={page.href}
+                  className={`font-medium mx-2 px-3 py-2 rounded-md select-none ${
+                    CURRENT_PAGE === page.href
+                      ? "bg-gray-800 text-white"
+                      : "text-gray-300 hover:text-white hover:bg-gray-700"
+                  }`}
+                >
+                  {page.name}
+                </Link>
+              ))
           )}
         </div>
         {/* Profile Link */}

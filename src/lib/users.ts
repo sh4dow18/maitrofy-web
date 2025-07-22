@@ -201,3 +201,11 @@ export function GetUserBacklog(email: string) {
       ORDERED_GAMES_LIST.indexOf(b!.game.slug)
   );
 }
+export function FindUserLog(email: string, slug: string) {
+  // Find User
+  const USER = usersList.find((user) => user.email === email);
+  if (USER === undefined) {
+    return null;
+  }
+  return USER.gamesList.find((user) => user.game === slug);
+}

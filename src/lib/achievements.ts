@@ -6,3 +6,9 @@ export function FindAchievementNameById(id: number) {
     achievementsList.find((achievement) => achievement.id === id)?.name ?? "N/A"
   );
 }
+// Find Achievement Value by Achievement Id Function
+export function FindAchievementValueById(id: number) {
+  return (
+    achievementsList.find((achievement) => achievement.id === id)?.value ?? 0
+  );
+}

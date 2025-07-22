@@ -54,7 +54,7 @@ function BacklogPage() {
         {gamesList.map((game, index) => (
           <Link
             key={index}
-            href="#"
+            href={`/backlog/${game.game.slug}`}
             className={`${
               game.game.slug === "skeleton"
                 ? "animate-pulse"

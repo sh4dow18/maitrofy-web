@@ -90,7 +90,7 @@ function BacklogOverviewPage() {
       });
     };
     GetData();
-  }, []);
+  }, [SLUG]);
   // Returns Game Content Page
   return log !== null ? (
     // Game Content Main Container

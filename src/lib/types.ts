@@ -52,6 +52,5 @@ export type Game = {
   themes: number[];
   collection: string | null;
   developer: string;
-  story: string | null;
   gameMode?: string | null;
 };

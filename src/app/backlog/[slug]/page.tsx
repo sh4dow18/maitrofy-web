@@ -1,9 +1,6 @@
 "use client";
 import { GameOverview, NotFound } from "@/components";
-import {
-  FindAchievementNameById,
-  FindAchievementValueById,
-} from "@/lib/achievements";
+import { FindAchievementById } from "@/lib/achievements";
 import {
   FindGameBySlug,
   FindGenresFromGame,
@@ -42,7 +39,7 @@ function BacklogOverviewPage() {
   };
   const [log, SetLog] = useState<{
     game: Game;
-    achievement: { name: string; value: string };
+    achievement: { name: string; value: string; logo: string | null };
     platform: string;
     rating: number;
     date: string;
@@ -52,6 +49,7 @@ function BacklogOverviewPage() {
     achievement: {
       name: "Cargando...",
       value: "-",
+      logo: null,
     },
     platform: "Cargando...",
     rating: 0.0,
@@ -71,17 +69,16 @@ function BacklogOverviewPage() {
         SetLog(null);
         return;
       }
+      const ACHIEVEMENT = FindAchievementById(LOG.achievement ?? 0);
       SetLog({
         game: CONTENT,
         achievement: {
           name:
-            LOG.achievement !== null
-              ? FindAchievementNameById(LOG.achievement)
+            typeof ACHIEVEMENT === "object"
+              ? ACHIEVEMENT.name
               : "No Completado",
-          value:
-            LOG.achievement !== null
-              ? `${FindAchievementValueById(LOG.achievement)}`
-              : "-",
+          value: typeof ACHIEVEMENT === "object" ? `${ACHIEVEMENT.value}` : "-",
+          logo: typeof ACHIEVEMENT === "object" ? ACHIEVEMENT.logo : null,
         },
         platform: FindPlatformNameBySlug(LOG.platform),
         rating: LOG.rating !== null ? LOG.rating : 0.0,
@@ -111,13 +108,12 @@ function BacklogOverviewPage() {
         rating={log.game.rating}
         classification={log.game.classification}
         developer={log.game.developer}
-        story={log.game.story}
         gameMode={log.game.gameMode}
         trailer={log.game.video}
         log={{
           achievement: log.achievement,
           platform: log.platform,
-          rating: log.rating / 2,
+          rating: log.rating,
           date: log.date,
           note: log.note,
         }}
@@ -126,8 +122,8 @@ function BacklogOverviewPage() {
   ) : (
     <NotFound
       backTo={{
-        name: "Juegos",
-        href: "/games",
+        name: "Mi Trayectoria",
+        href: "/backlog",
       }}
     />
   );

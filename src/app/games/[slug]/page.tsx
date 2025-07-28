@@ -56,7 +56,6 @@ async function GameContentPage({ params }: Props) {
         rating={CONTENT.rating}
         classification={CONTENT.classification}
         developer={CONTENT.developer}
-        story={CONTENT.story}
         gameMode={CONTENT.gameMode}
         trailer={CONTENT.video}
       />

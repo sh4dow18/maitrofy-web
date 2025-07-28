@@ -29,7 +29,10 @@ export type GameLog = {
     cover: string;
     name: string;
   };
-  achievement: string;
+  achievement: {
+    name: string;
+    logo: string | null;
+  };
   platform: string;
   rating: number | null;
   date: string | null;

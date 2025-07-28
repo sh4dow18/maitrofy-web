@@ -2,26 +2,31 @@
   {
     "id": 1,
     "name": "Completado",
-    "value": 1
+    "value": 1,
+    "logo": "completed"
   },
   {
     "id": 2,
-    "name": "Platino Offline",
-    "value": 2
+    "name": "Platoffline",
+    "value": 2,
+    "logo": "offline"
   },
   {
     "id": 3,
     "name": "PsicoPlatino",
-    "value": 3
+    "value": 3,
+    "logo": "psico"
   },
   {
     "id": 4,
     "name": "PseudoPlatino",
-    "value": 4
+    "value": 4,
+    "logo": "pseudo"
   },
   {
     "id": 5,
     "name": "Platino",
-    "value": 4
+    "value": 4,
+    "logo": "platinum"
   }
 ]

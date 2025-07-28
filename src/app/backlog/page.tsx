@@ -7,6 +7,9 @@ import { GameLog } from "@/lib/types";
 import { GetUserBacklog } from "@/lib/users";
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { default as NextImage } from "next/image";
+import { AiOutlineLoading3Quarters } from "react-icons/ai";
+import { CalendarDaysIcon, StarIcon } from "@heroicons/react/16/solid";
 // Backlog Page Main Function
 function BacklogPage() {
   // Backlog Page Constants
@@ -16,7 +19,10 @@ function BacklogPage() {
       name: "Cargando...",
       slug: "skeleton",
     },
-    achievement: "Cargando...",
+    achievement: {
+      name: "Cargando...",
+      logo: null,
+    },
     platform: "Cargando...",
     rating: null,
     date: null,
@@ -50,58 +56,126 @@ function BacklogPage() {
         </h1>
       </div>
       {/* Games Page Games Container */}
-      <div className="flex flex-wrap gap-5 mx-auto max-w-[1600px] place-content-center">
+      <div className="flex flex-wrap gap-5 place-content-center">
         {gamesList.map((game, index) => (
           <Link
             key={index}
-            href={`/backlog/${game.game.slug}`}
+            href={
+              game.game.slug !== "skeleton" ? `/backlog/${game.game.slug}` : ""
+            }
             className={`${
               game.game.slug === "skeleton"
                 ? "animate-pulse"
                 : "transition hover:scale-105"
-            } w-full min-[500px]:w-[40%] min-[960px]:w-[30%] min-[1100px]:w-60`}
+            } max-[580px]:w-full min-[1100px]:w-[500px]`}
           >
             {/* Game Log Card Container */}
-            <div className="flex flex-col bg-gray-900 rounded-xl shadow shadow-gray-50/50">
+            <div className="flex flex-col bg-gray-900 rounded-xl shadow shadow-gray-50/50 min-[1100px]:flex-row">
               {/* Game Log Card Image */}
               <Image
                 src={game.game.cover}
                 alt={`${game.game.slug} Cover`}
                 skeleton="cover"
-                width={420}
-                height={560}
+                width={523}
+                height={697}
                 priority
-                className="w-full rounded-t-xl"
+                className="rounded-t-xl w-full min-[580px]:w-auto min-[580px]:h-[310px] min-[1100px]:w-[250px] min-[1100px]:rounded-l-xl"
               />
               {/* Game Log Card Section Information */}
-              <section className="flex flex-col gap-3 mx-5 my-5">
-                {/* Game Log Card Section Title */}
-                <h2 className="text-xl font-semibold text-gray-200 line-clamp-1">
-                  {game.game.name}
-                </h2>
+              <section className="flex flex-col gap-3 m-4">
                 {/* Game Log Card Section Information Container */}
-                <div className="flex flex-col gap-3">
-                  {/* Game Log Card Section Achievement */}
-                  <span>
-                    <strong>Logro</strong>:{" "}
-                    {game.achievement !== "N/A"
-                      ? game.achievement
-                      : "No Completado"}
-                  </span>
-                  {/* Game Log Card Section Platform */}
-                  <span className="line-clamp-1">
-                    <strong>Plataforma</strong>: {game.platform}
-                  </span>
-                  {/* Game Log Card Section Rating */}
-                  <span>
-                    <strong>Puntuación</strong>:{" "}
-                    {game.rating !== null ? game.rating / 2 : "-"}
-                  </span>
-                  {/* Game Log Card Section Date */}
-                  <span>
-                    <strong>Obtenido</strong>:{" "}
-                    {game.date !== null ? game.date : "--/--/----"}
-                  </span>
+                <div className="grid grid-cols-2 gap-3">
+                  {/* Game Log Card Section Achievement Container */}
+                  <div className="flex flex-col place-items-center gap-2">
+                    {/* Game Log Card Section Achievement Title */}
+                    <span>
+                      <strong>Logro</strong>
+                    </span>
+                    {/* Game Log Card Section Achievement Image */}
+                    <div className="flex flex-col place-items-center gap-2 bg-gray-800 p-2 w-full rounded-md">
+                      {game.achievement.logo !== null ? (
+                        <NextImage
+                          src={
+                            game.achievement.logo !== "playing"
+                              ? `/achievements/${game.achievement.logo}.svg`
+                              : "/favicon.svg"
+                          }
+                          alt={`${game.achievement.name} Logo`}
+                          width={52}
+                          height={game.achievement.logo !== "playing" ? 62 : 52}
+                          className={`w-[52px] ${
+                            game.achievement.logo !== "playing"
+                              ? "h-[62px]"
+                              : "h-[52px] my-[5px]"
+                          }`}
+                        />
+                      ) : (
+                        // If it is loading
+                        <AiOutlineLoading3Quarters className="w-[87px] h-[62px] animate-spin p-2" />
+                      )}
+                      {/* Game Log Card Section Achievement Name */}
+                      <span className="text-sm">{game.achievement.name}</span>
+                    </div>
+                  </div>
+                  {/* Game Log Card Section Platform Container */}
+                  <div className="flex flex-col place-items-center gap-2">
+                    {/* Game Log Card Section Platform Title */}
+                    <span>
+                      <strong>Plataforma</strong>
+                    </span>
+                    <div className="flex flex-col place-items-center gap-2 bg-gray-800 p-2 w-full rounded-md">
+                      {/* Game Log Card Section Platform Image */}
+                      <NextImage
+                        src="/favicon.svg"
+                        alt={`${game.achievement.name} Trophy Logo`}
+                        width={52}
+                        height={52}
+                        className="my-[5px] w-[52px] h-[52px]"
+                      />
+                      {/* Game Log Card Section Platform Name */}
+                      <span className="text-sm line-clamp-1 w-22">
+                        {game.platform}
+                      </span>
+                    </div>
+                  </div>
+                  {/* Game Log Card Section Rating Container */}
+                  <div className="flex flex-col place-items-center gap-2">
+                    {/* Game Log Card Section Rating Title */}
+                    <span>
+                      <strong>Puntuación</strong>
+                    </span>
+                    <div className="flex flex-col place-items-center gap-2 bg-gray-800 p-2 w-full rounded-md">
+                      {/* Game Log Card Section Rating Image */}
+                      <StarIcon
+                        className={`w-12 ${
+                          game.rating !== null ? "fill-yellow-200" : ""
+                        }`.trimEnd()}
+                      />
+                      {/* Game Log Card Section Rating String */}
+                      <span className="text-sm line-clamp-1">
+                        {game.rating !== null ? game.rating : "-"} Estrellas
+                      </span>
+                    </div>
+                  </div>
+                  {/* Game Log Card Section Date Container */}
+                  <div className="flex flex-col place-items-center gap-2">
+                    {/* Game Log Card Section Date Title */}
+                    <span>
+                      <strong>Obtenido</strong>
+                    </span>
+                    <div className="flex flex-col place-items-center gap-2 bg-gray-800 p-2 w-full rounded-md">
+                      {/* Game Log Card Section Date Image */}
+                      <CalendarDaysIcon
+                        className={`w-12 ${
+                          game.date !== null ? "fill-green-200" : ""
+                        }`.trimEnd()}
+                      />
+                      {/* Game Log Card Section Date String */}
+                      <span className="text-sm line-clamp-1">
+                        {game.date !== null ? game.date : "--/--/----"}
+                      </span>
+                    </div>
+                  </div>
                 </div>
               </section>
             </div>

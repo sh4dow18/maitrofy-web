@@ -6,7 +6,7 @@ import { FindGameBySlug, FindGamesBySlugIds } from "./games";
 import { FindThemeNameById } from "./themes";
 import { FindGenreNameById } from "./genres";
 import { FindPlatformNameBySlug } from "./platforms";
-import { FindAchievementNameById } from "./achievements";
+import { FindAchievementById } from "./achievements";
 // Get User Information Function
 export function GetUser(email: string) {
   // Find User
@@ -168,7 +168,8 @@ export function GetUserBacklog(email: string) {
         return null;
       }
       // Get Achievement as Number
-      const ACHIEVEMENT = entry.achievement !== null ? entry.achievement : 0;
+      const ACHIEVEMENT_ID = entry.achievement !== null ? entry.achievement : 0;
+      const ACHIEVEMENT = FindAchievementById(ACHIEVEMENT_ID);
       // Return Backlog
       return {
         game: {
@@ -176,7 +177,10 @@ export function GetUserBacklog(email: string) {
           cover: GAME.cover,
           name: GAME.name,
         },
-        achievement: FindAchievementNameById(ACHIEVEMENT),
+        achievement: {
+          name: typeof ACHIEVEMENT === "object" ? ACHIEVEMENT.name : "Jugando",
+          logo: typeof ACHIEVEMENT === "object" ? ACHIEVEMENT.logo : "playing",
+        },
         platform: FindPlatformNameBySlug(entry.platform),
         rating: entry.rating,
         date: entry.date,
@@ -189,7 +193,10 @@ export function GetUserBacklog(email: string) {
       cover: string;
       name: string;
     };
-    achievement: string;
+    achievement: {
+      name: string;
+      logo: string | null;
+    };
     platform: string;
     rating: number | null;
     date: string | null;

@@ -1,3 +1,4 @@
+export { default as BacklogCardBadge } from "./backlog-card-badge";
 export { default as Form } from "./form";
 export { default as GameOverview } from "./game-overview";
 export { default as Image } from "./image";

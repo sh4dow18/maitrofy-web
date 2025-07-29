@@ -1,14 +1,13 @@
 // Set this page as a client page
 "use client";
 // Backlog Page Requirements
-import { Image } from "@/components";
+import { BacklogCardBadge, Image } from "@/components";
 import { GetJWT } from "@/lib/session";
 import { GameLog } from "@/lib/types";
 import { GetUserBacklog } from "@/lib/users";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { default as NextImage } from "next/image";
-import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import { CalendarDaysIcon, StarIcon } from "@heroicons/react/16/solid";
 // Backlog Page Main Function
 function BacklogPage() {
@@ -64,10 +63,8 @@ function BacklogPage() {
               game.game.slug !== "skeleton" ? `/backlog/${game.game.slug}` : ""
             }
             className={`${
-              game.game.slug === "skeleton"
-                ? "animate-pulse"
-                : "transition hover:scale-105"
-            } max-[580px]:w-full min-[1100px]:w-[500px]`}
+              game.game.slug !== "skeleton" ? "transition hover:scale-105" : ""
+            } w-full min-[580px]:w-[233px] min-[1100px]:w-[500px]`.trimStart()}
           >
             {/* Game Log Card Container */}
             <div className="flex flex-col bg-gray-900 rounded-xl shadow shadow-gray-50/50 min-[1100px]:flex-row">
@@ -82,101 +79,71 @@ function BacklogPage() {
                 className="rounded-t-xl w-full min-[580px]:w-auto min-[580px]:h-[310px] min-[1100px]:w-[250px] min-[1100px]:rounded-l-xl"
               />
               {/* Game Log Card Section Information */}
-              <section className="flex flex-col gap-3 m-4">
-                {/* Game Log Card Section Information Container */}
-                <div className="grid grid-cols-2 gap-3">
-                  {/* Game Log Card Section Achievement Container */}
-                  <div className="flex flex-col place-items-center gap-2">
-                    {/* Game Log Card Section Achievement Title */}
-                    <span>
-                      <strong>Logro</strong>
-                    </span>
-                    {/* Game Log Card Section Achievement Image */}
-                    <div className="flex flex-col place-items-center gap-2 bg-gray-800 p-2 w-full rounded-md">
-                      {game.achievement.logo !== null ? (
-                        <NextImage
-                          src={
-                            game.achievement.logo !== "playing"
-                              ? `/achievements/${game.achievement.logo}.svg`
-                              : "/favicon.svg"
-                          }
-                          alt={`${game.achievement.name} Logo`}
-                          width={52}
-                          height={game.achievement.logo !== "playing" ? 62 : 52}
-                          className={`w-[52px] ${
-                            game.achievement.logo !== "playing"
-                              ? "h-[62px]"
-                              : "h-[52px] my-[5px]"
-                          }`}
-                        />
-                      ) : (
-                        // If it is loading
-                        <AiOutlineLoading3Quarters className="w-[87px] h-[62px] animate-spin p-2" />
-                      )}
-                      {/* Game Log Card Section Achievement Name */}
-                      <span className="text-sm">{game.achievement.name}</span>
-                    </div>
-                  </div>
-                  {/* Game Log Card Section Platform Container */}
-                  <div className="flex flex-col place-items-center gap-2">
-                    {/* Game Log Card Section Platform Title */}
-                    <span>
-                      <strong>Plataforma</strong>
-                    </span>
-                    <div className="flex flex-col place-items-center gap-2 bg-gray-800 p-2 w-full rounded-md">
-                      {/* Game Log Card Section Platform Image */}
+              <section className="flex flex-col gap-3 p-4 w-full min-[1100px]:w-[260px]">
+                {/* Achievement Backlog Card Badge */}
+                <BacklogCardBadge
+                  title="Logro"
+                  value={game.achievement.name}
+                  logo={
+                    game.achievement.logo !== null ? (
                       <NextImage
-                        src="/favicon.svg"
-                        alt={`${game.achievement.name} Trophy Logo`}
-                        width={52}
-                        height={52}
-                        className="my-[5px] w-[52px] h-[52px]"
+                        src={
+                          game.achievement.logo !== "playing"
+                            ? `/achievements/${game.achievement.logo}.svg`
+                            : "/favicon.svg"
+                        }
+                        alt={`${game.achievement.name} Logo`}
+                        width={42}
+                        height={game.achievement.logo !== "playing" ? 52 : 42}
+                        className={`w-[42px] ${
+                          game.achievement.logo !== "playing"
+                            ? "h-[52px]"
+                            : "h-[42px] my-[5px]"
+                        }`}
                       />
-                      {/* Game Log Card Section Platform Name */}
-                      <span className="text-sm line-clamp-1 w-22">
-                        {game.platform}
-                      </span>
-                    </div>
-                  </div>
-                  {/* Game Log Card Section Rating Container */}
-                  <div className="flex flex-col place-items-center gap-2">
-                    {/* Game Log Card Section Rating Title */}
-                    <span>
-                      <strong>Puntuación</strong>
-                    </span>
-                    <div className="flex flex-col place-items-center gap-2 bg-gray-800 p-2 w-full rounded-md">
-                      {/* Game Log Card Section Rating Image */}
-                      <StarIcon
-                        className={`w-12 ${
-                          game.rating !== null ? "fill-yellow-200" : ""
-                        }`.trimEnd()}
-                      />
-                      {/* Game Log Card Section Rating String */}
-                      <span className="text-sm line-clamp-1">
-                        {game.rating !== null ? game.rating : "-"} Estrellas
-                      </span>
-                    </div>
-                  </div>
-                  {/* Game Log Card Section Date Container */}
-                  <div className="flex flex-col place-items-center gap-2">
-                    {/* Game Log Card Section Date Title */}
-                    <span>
-                      <strong>Obtenido</strong>
-                    </span>
-                    <div className="flex flex-col place-items-center gap-2 bg-gray-800 p-2 w-full rounded-md">
-                      {/* Game Log Card Section Date Image */}
-                      <CalendarDaysIcon
-                        className={`w-12 ${
-                          game.date !== null ? "fill-green-200" : ""
-                        }`.trimEnd()}
-                      />
-                      {/* Game Log Card Section Date String */}
-                      <span className="text-sm line-clamp-1">
-                        {game.date !== null ? game.date : "--/--/----"}
-                      </span>
-                    </div>
-                  </div>
-                </div>
+                    ) : null
+                  }
+                />
+                {/* Platform Backlog Card Badge */}
+                <BacklogCardBadge
+                  title="Plataforma"
+                  value={game.platform}
+                  logo={
+                    <NextImage
+                      src="/favicon.svg"
+                      alt={`${game.achievement.name} Trophy Logo`}
+                      width={52}
+                      height={52}
+                      className="my-[5px] w-[52px] h-[52px]"
+                    />
+                  }
+                />
+                {/* Rating Backlog Card Badge */}
+                <BacklogCardBadge
+                  title="Puntuación"
+                  value={`${
+                    game.rating !== null ? game.rating : "-"
+                  } Estrellas`}
+                  logo={
+                    <StarIcon
+                      className={`w-12 ${
+                        game.rating !== null ? "fill-yellow-200" : ""
+                      }`.trimEnd()}
+                    />
+                  }
+                />
+                {/* Date Backlog Card Badge */}
+                <BacklogCardBadge
+                  title="Obtenido"
+                  value={game.date !== null ? game.date : "--/--/----"}
+                  logo={
+                    <CalendarDaysIcon
+                      className={`w-12 ${
+                        game.date !== null ? "fill-green-200" : ""
+                      }`.trimEnd()}
+                    />
+                  }
+                />
               </section>
             </div>
           </Link>

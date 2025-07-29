@@ -26,7 +26,7 @@ export type User = {
 export type GameLog = {
   game: {
     slug: string;
-    cover: string;
+    cover: string | null;
     name: string;
   };
   achievement: {

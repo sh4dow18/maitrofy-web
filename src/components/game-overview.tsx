@@ -157,7 +157,11 @@ function GameOverview({
       <div className="min-[600px]:relative">
         {/* Game Overview Background Image */}
         <Image
-          src={background || "/404.png"}
+          src={
+            background !== null
+              ? `https://images.igdb.com/igdb/image/upload/t_original/${background}`
+              : "/404.png"
+          }
           alt="Fondo decorativo"
           skeleton="background"
           fill
@@ -168,7 +172,7 @@ function GameOverview({
         <div className="flex flex-col gap-5 min-[600px]:flex-row min-[600px]:place-content-between min-[600px]:pt-30 min-[600px]:px-3 min-[600px]:pb-3">
           {/* Game Overview Image Cover */}
           <Image
-            src={cover}
+            src={`https://images.igdb.com/igdb/image/upload/t_original/${cover}`}
             alt={`${title} Cover`}
             skeleton="cover"
             width={600}

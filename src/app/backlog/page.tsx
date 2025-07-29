@@ -14,7 +14,7 @@ function BacklogPage() {
   // Backlog Page Constants
   const BACKLOG_SKELETON = {
     game: {
-      cover: "/skeletons/cover.webp",
+      cover: null,
       name: "Cargando...",
       slug: "skeleton",
     },
@@ -70,7 +70,11 @@ function BacklogPage() {
             <div className="flex flex-col bg-gray-900 rounded-xl shadow shadow-gray-50/50 min-[1100px]:flex-row">
               {/* Game Log Card Image */}
               <Image
-                src={game.game.cover}
+                src={
+                  game.game.cover !== null
+                    ? `https://images.igdb.com/igdb/image/upload/t_original/${game.game.cover}`
+                    : "/skeletons/cover.webp"
+                }
                 alt={`${game.game.slug} Cover`}
                 skeleton="cover"
                 width={523}

@@ -44,7 +44,7 @@ function GamesPage() {
             className="rounded-md w-[30%] min-[560px]:w-40"
           >
             <Image
-              src={game.cover}
+              src={`https://images.igdb.com/igdb/image/upload/t_original/${game.cover}`}
               alt={`${game.slug} Cover`}
               skeleton="cover"
               width={180}

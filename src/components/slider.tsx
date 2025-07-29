@@ -50,7 +50,7 @@ function Slider({ title, contentList }: Props) {
               className="keen-slider__slide rounded-md"
             >
               <Image
-                src={content.cover}
+                src={`https://images.igdb.com/igdb/image/upload/t_original/${content.cover}`}
                 alt={`${content.slug} Cover`}
                 skeleton="cover"
                 width={300}

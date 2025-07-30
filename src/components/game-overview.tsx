@@ -15,7 +15,7 @@ import { AiFillExperiment } from "react-icons/ai";
 // Game Overview Props
 interface Props {
   title: string;
-  cover: string;
+  cover: string | null;
   background: string | null;
   date: string;
   genres: string;
@@ -172,13 +172,17 @@ function GameOverview({
         <div className="flex flex-col gap-5 min-[600px]:flex-row min-[600px]:place-content-between min-[600px]:pt-30 min-[600px]:px-3 min-[600px]:pb-3">
           {/* Game Overview Image Cover */}
           <Image
-            src={`https://images.igdb.com/igdb/image/upload/t_original/${cover}`}
+            src={
+              cover !== null
+                ? `https://images.igdb.com/igdb/image/upload/t_original/${cover}`
+                : "/skeletons/cover.webp"
+            }
             alt={`${title} Cover`}
             skeleton="cover"
             width={600}
             height={635}
             priority
-            className="rounded-lg w-full min-[600px]:w-44 min-[600px]:shadow-sm shadow-gray-700"
+            className="rounded-lg w-full min-[600px]:w-44 min-[600px]:h-[234px] min-[600px]:shadow-sm shadow-gray-700"
           />
           {/* Game Overview Button Container */}
           <div className="mt-auto">
@@ -254,7 +258,7 @@ function GameOverview({
             {LOG_INFORMATION_LIST.map((log, index) => (
               // Game Overview Extra Information Section
               <section
-                className="flex gap-2 place-content-between bg-gray-800 place-items-center p-2 rounded-md"
+                className="flex gap-2 place-content-between bg-gray-800 place-items-center p-2 rounded-md w-full min-[621px]:w-[48%] min-[880px]:w-[32%]"
                 key={index}
               >
                 <div className="flex flex-col gap-1">

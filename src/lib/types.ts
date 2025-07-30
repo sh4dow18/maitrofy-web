@@ -40,7 +40,7 @@ export type GameLog = {
 export type Game = {
   name: string;
   summary: string;
-  cover: string;
+  cover: string | null;
   background: string | null;
   rating: number;
   classification: string | null;

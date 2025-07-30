@@ -21,7 +21,7 @@ function BacklogOverviewPage() {
     name: "Cargando",
     summary:
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas interdum tellus sit amet varius luctus. Cras ac arcu ipsum. Maecenas viverra sem at vehicula vulputate. Suspendisse eget tincidunt nibh, id laoreet ipsum. Integer enim lacus, faucibus ut sapien id, commodo feugiat turpis. Nulla venenatis placerat lacus, ut commodo diam euismod a. In convallis tristique sapien nec fermentum. In hac habitasse platea dictumst. Cras feugiat sed tortor sit amet venenatis. Vivamus vel neque quam. Pellentesque dolor risus, blandit eget aliquam a, mattis id augue.",
-    cover: "/skeletons/cover.webp",
+    cover: null,
     background: null,
     rating: 0.0,
     classification: "-",

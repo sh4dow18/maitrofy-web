@@ -292,7 +292,15 @@ function GameOverview({
           {/* Game Page Trailer Main Title */}
           <span className="font-semibold text-gray-300">Trailer</span>
           {/* Game Page Trailer */}
-          <YoutubeVideo id={trailer} title={title} />
+          <YoutubeVideo
+            id={trailer}
+            title={title}
+            fallbackImage={
+              background !== null
+                ? `https://images.igdb.com/igdb/image/upload/t_original/${background}`
+                : "/404.png"
+            }
+          />
         </section>
       )}
     </div>

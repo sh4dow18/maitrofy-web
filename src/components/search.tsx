@@ -52,7 +52,7 @@ function Search() {
             className="rounded-md w-[30%] min-[552px]:w-40"
           >
             <Image
-              src={content.image}
+              src={`https://images.igdb.com/igdb/image/upload/t_original/${content.image}`}
               alt={`${content.slug} Cover`}
               skeleton="cover"
               width={300}

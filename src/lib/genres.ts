@@ -4,3 +4,7 @@ import genresList from "@/db/genres.json";
 export function FindGenreNameById(id: number) {
   return genresList.find((genre) => genre.id === id)?.name ?? "N/A";
 }
+// Find All Genres Function
+export function FindAllGenres() {
+  return genresList;
+}

@@ -61,7 +61,7 @@ function Nav() {
     <nav>
       <div
         ref={menuRef}
-        className="p-2 grid grid-cols-3 gap-10 items-center relative min-[1035px]:flex min-[1035px]:px-6"
+        className="p-2 grid grid-cols-3 items-center relative min-[1035px]:flex min-[1035px]:px-6"
       >
         {/* Burger Menu Button to Mobile Nav */}
         <button
@@ -76,12 +76,11 @@ function Nav() {
             className={`w-7 mx-auto ${open ? "" : "hidden"}`.trimEnd()}
           />
         </button>
-        <Link href="/" className="min-[1035px]:m-3">
-          <MainLogo
-            width={120}
-            height={25}
-            className="w-[120px] h-[25px] mx-auto"
-          />
+        <Link
+          href="/"
+          className="w-[120px] mx-auto min-[1035px]:m-3"
+        >
+          <MainLogo width={120} height={25} className="w-[120px] h-[25px]" />
         </Link>
         {/* Desktop Nav */}
         <div className="hidden min-[1035px]:block">

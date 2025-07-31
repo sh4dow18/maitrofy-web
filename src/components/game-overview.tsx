@@ -189,7 +189,7 @@ function GameOverview({
             {log === undefined ? (
               // Add Log Button
               <button
-                className="flex gap-1 items-center justify-center bg-gray-300 text-xl py-2 px-5 rounded-sm text-gray-900 font-semibold w-full"
+                className="flex gap-1 items-center justify-center bg-gray-400 text-xl py-2 px-5 rounded-sm text-gray-900 font-semibold w-full"
                 disabled
               >
                 <PlusIcon className="w-6 h-6" />

@@ -32,7 +32,7 @@ export default function RootLayout({
           {/* Light in Top Left */}
           <Light direction="tl" />
           {/* Main Content */}
-          <div className="flex flex-col place-content-center w-full z-10 text-gray-400">
+          <div className="flex flex-col w-full z-10 text-gray-400">
             {children}
           </div>
           {/* Light in Bottom Right */}
@@ -64,7 +64,7 @@ export default function RootLayout({
             . Todos los Derechos Reservados.
           </p>
           {/* Last Update */}
-          <p className="text-xs sm:order-1 md:text-sm">29 de Julio del 2025</p>
+          <p className="text-xs sm:order-1 md:text-sm">31 de Julio del 2025</p>
         </footer>
       </body>
     </html>

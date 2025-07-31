@@ -4,3 +4,7 @@ import themesList from "@/db/themes.json";
 export function FindThemeNameById(id: number) {
   return themesList.find((theme) => theme.id === id)?.name ?? "N/A";
 }
+// Find All Themes Function
+export function FindAllThemes() {
+  return themesList;
+}

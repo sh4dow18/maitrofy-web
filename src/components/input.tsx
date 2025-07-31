@@ -8,8 +8,8 @@ interface Props {
   label: string;
   placeholder: string;
   name: string;
-  help: string;
-  validation: "email" | "password";
+  validation: "email" | "password" | "text";
+  help?: string;
   disabled?: boolean;
   autoComplete?: string;
   maxLength?: number;
@@ -24,6 +24,9 @@ const REGEX: Record<string, RegExp> = {
   // Only Strong Passwords
   // Example: Hola1234! or P@ssw0rd
   password: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$/,
+  // Only Readable Text
+  // Example: Ramsés or Juan Tamarindo or Pepelefu
+  text: /^[a-zA-Z0-9ÁÉÍÓÚÑáéíóúñ ]+$/,
 };
 // Input Main Function
 function Input({
@@ -108,19 +111,21 @@ function Input({
           />
         )}
       </div>
-      {/* Input Help Message */}
-      <small
-        aria-disabled={disabled}
-        className={`aria-disabled:text-gray-600 ${
-          state !== "Neutral"
-            ? state === "Invalid"
-              ? "text-red-500"
+      {help !== undefined && (
+        // Input Help Message
+        <small
+          aria-disabled={disabled}
+          className={`aria-disabled:text-gray-600 ${
+            state !== "Neutral"
+              ? state === "Invalid"
+                ? "text-red-500"
+                : undefined
               : undefined
-            : undefined
-        }`}
-      >
-        {`${help}${optional === true ? ". Este Campo es OPCIONAL" : ""}`}
-      </small>
+          }`}
+        >
+          {`${help}${optional === true ? ". Este Campo es OPCIONAL" : ""}`}
+        </small>
+      )}
     </div>
   );
 }

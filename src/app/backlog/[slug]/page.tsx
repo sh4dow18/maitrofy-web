@@ -33,8 +33,6 @@ function BacklogOverviewPage() {
     themes: [],
     collection: "Cargando...",
     developer: "Cargando...",
-    story:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas interdum tellus sit amet varius luctus. Cras ac arcu ipsum. Maecenas viverra sem at vehicula vulputate. Suspendisse eget tincidunt nibh, id laoreet ipsum. Integer enim lacus, faucibus ut sapien id, commodo feugiat turpis. Nulla venenatis placerat lacus, ut commodo diam euismod a. In convallis tristique sapien nec fermentum. In hac habitasse platea dictumst. Cras feugiat sed tortor sit amet venenatis. Vivamus vel neque quam. Pellentesque dolor risus, blandit eget aliquam a, mattis id augue.",
     gameMode: "Cargando...",
   };
   const [log, SetLog] = useState<{
@@ -44,6 +42,7 @@ function BacklogOverviewPage() {
     rating: number;
     date: string;
     note: string | null;
+    time: number;
   } | null>({
     game: LOADING_GAME,
     achievement: {
@@ -55,6 +54,7 @@ function BacklogOverviewPage() {
     rating: 0.0,
     date: "--/--/----",
     note: null,
+    time: 0,
   });
   useEffect(() => {
     const GetData = async () => {
@@ -84,6 +84,7 @@ function BacklogOverviewPage() {
         rating: LOG.rating !== null ? LOG.rating : 0.0,
         date: LOG.date !== null ? LOG.date : "--/--/----",
         note: LOG.note,
+        time: LOG.time,
       });
     };
     GetData();
@@ -116,6 +117,7 @@ function BacklogOverviewPage() {
           rating: log.rating,
           date: log.date,
           note: log.note,
+          time: log.time
         }}
       />
     </div>

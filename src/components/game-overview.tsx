@@ -1,6 +1,7 @@
 // Game Overview Requirements
 import {
   CalendarDaysIcon,
+  ClockIcon,
   PlusIcon,
   StarIcon,
   UserGroupIcon,
@@ -37,6 +38,7 @@ interface Props {
     rating: number;
     date: string;
     note: string | null;
+    time: number;
   };
 }
 // Game Overview Main Container
@@ -147,6 +149,11 @@ function GameOverview({
       title: "Valoración",
       value: log !== undefined ? `${log.rating} Estrellas` : "",
       logo: <StarIcon className="w-12 fill-yellow-200" />,
+    },
+    {
+      title: "Tiempo",
+      value: log !== undefined ? `${log.time} Horas` : "",
+      logo: <ClockIcon className="w-12 fill-gray-200" />,
     },
   ];
   // Returns Game Overview Component

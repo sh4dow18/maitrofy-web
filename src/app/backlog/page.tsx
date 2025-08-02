@@ -80,7 +80,7 @@ function BacklogPage() {
                 width={523}
                 height={697}
                 priority
-                className="rounded-t-xl w-full min-[580px]:w-auto min-[580px]:h-[310px] min-[1100px]:w-[250px] min-[1100px]:rounded-l-xl"
+                className="rounded-t-xl w-full min-[580px]:w-auto min-[580px]:h-[310px] min-[1100px]:w-[250px] min-[1100px]:rounded-l-xl min-[1100px]:rounded-tr-none"
               />
               {/* Game Log Card Section Information */}
               <section className="flex flex-col gap-3 p-4 w-full min-[1100px]:w-[260px]">

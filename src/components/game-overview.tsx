@@ -167,7 +167,7 @@ function GameOverview({
           src={
             background !== null
               ? `https://images.igdb.com/igdb/image/upload/t_original/${background}`
-              : "/404.png"
+              : "/skeletons/background.webp"
           }
           alt="Fondo decorativo"
           skeleton="background"

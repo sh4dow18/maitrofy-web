@@ -54,3 +54,21 @@ export type Game = {
   developer: string;
   gameMode?: string | null;
 };
+
+export type ThemeResponse = {
+  id: number;
+  name: string;
+};
+export type GenreResponse = {
+  id: number;
+  name: string;
+};
+export type PlatformResponse = {
+  id: number;
+  name: string;
+};
+export type MinimalGameResponse = {
+  slug: string;
+  name: string;
+  cover: string;
+};

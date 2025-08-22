@@ -3,9 +3,13 @@ import gamesList from "@/db/games.json";
 import themesList from "@/db/themes.json";
 import genresList from "@/db/genres.json";
 import platformsList from "@/db/platforms.json";
-// Find Top 50 Games Function
-export function FindTop100Games() {
-  return gamesList.slice(0, 100);
+import { MinimalGameResponse } from "./types";
+import { API } from "./admin";
+// Find Top 100 Games Function
+export async function FindTop100Games(): Promise<MinimalGameResponse[]> {
+  return await fetch(`${API}/games`, {
+    method: "GET",
+  }).then((response) => response.json());
 }
 // Find Top 30 Games by Name Function
 export function FindGameByName(name: string) {
@@ -82,42 +86,26 @@ export function FindGamesBySlugIds(slugsList: string[]) {
   return gamesList.filter((game) => slugsList.includes(game.slug));
 }
 // Find the Top 100 Games by Filters Function
-export function FindGamesByFilters(
-  name: string | null,
-  theme: number | null,
-  genre: number | null,
-  platform: number | null
-) {
-  // If no filter was submitted, return top 100 games
-  if (name === null && theme === null && genre === null && platform === null) {
-    return FindTop100Games();
+export async function FindGamesByFilters(
+  name: string,
+  theme: number,
+  genre: number,
+  platform: number
+): Promise<MinimalGameResponse[]> {
+  const SEARCH_URL = new URLSearchParams();
+  if (name != "") {
+    SEARCH_URL.append("name", name);
   }
-  // Filtered List
-  let filteredGamesList = gamesList;
-  // If name was submitted, filtered by lowarcase name
-  if (name !== null) {
-    filteredGamesList = filteredGamesList.filter((game) =>
-      game.name.toLowerCase().includes(name.toLowerCase())
-    );
+  if (theme != 0) {
+    SEARCH_URL.append("themeId", `${theme}`);
   }
-  // If theme was submitted, filtered by theme id number
-  if (theme !== null) {
-    filteredGamesList = filteredGamesList.filter((game) =>
-      game.themes.includes(theme)
-    );
+  if (genre != 0) {
+    SEARCH_URL.append("genreId", `${genre}`);
   }
-  // If genre was submitted, filtered by genre id number
-  if (genre !== null) {
-    filteredGamesList = filteredGamesList.filter((game) =>
-      game.genres.includes(genre)
-    );
+  if (platform != 0) {
+    SEARCH_URL.append("platformId", `${platform}`);
   }
-  // If platform was submitted, filtered by platform id number
-  if (platform !== null) {
-    filteredGamesList = filteredGamesList.filter((game) =>
-      game.platforms.includes(platform)
-    );
-  }
-  // Return Top 100 Games in Filtered Games List
-  return filteredGamesList.slice(0, 100);
+  return await fetch(`${API}/games/search?${SEARCH_URL}`, {
+    method: "GET",
+  }).then((response) => response.json());
 }

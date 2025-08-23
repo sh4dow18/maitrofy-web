@@ -5,16 +5,24 @@ import { FindPlatformNameBySlug } from "./platforms";
 import { FindAchievementById } from "./achievements";
 import { API } from "./admin";
 import { GetJWT } from "./session";
-import { UserResponse } from "./types";
+import { ErrorResponse, UserResponse } from "./types";
 // Get User Information Function
-export async function FindProfileWithUser(): Promise<UserResponse> {
-  return await fetch(`${API}/users/profile`, {
+export async function FindProfileWithUser(): Promise<UserResponse | ErrorResponse> {
+  const RESPONSE = await fetch(`${API}/users/profile`, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
       Authorization: `Bearer ${GetJWT()}`,
     },
-  }).then((response) => response.json());
+  });
+  // Get Data from JSON
+  const DATA = await RESPONSE.json();
+  // If Response is not 200, return it as Error Response
+  if (RESPONSE.ok == false) {
+    return DATA as ErrorResponse;
+  }
+  // If Response is 200, return it as User Response
+  return DATA as UserResponse;
 }
 // Function that allows to get the user backlog
 export function GetUserBacklog(email: string) {

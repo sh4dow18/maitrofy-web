@@ -3,7 +3,7 @@
 // Profile Page Requirements
 import { Image, ProfileSection } from "@/components";
 import { default as NextImage } from "next/image";
-import { GetJWT, RemoveJWT } from "@/lib/session";
+import { RemoveJWT } from "@/lib/session";
 import { UserResponse } from "@/lib/types";
 import {
   BookmarkIcon,
@@ -48,12 +48,16 @@ function ProfilePage() {
   // Execute this useEffect when page is loading
   useEffect(() => {
     const GetData = async () => {
-      const JWT = GetJWT() ?? undefined;
-      if (JWT === undefined) {
+      // Find Profile with User in JWT
+      const RESPONSE = await FindProfileWithUser();
+      // If Status exists in Response, that is Error Response, so, return to login and remove JWT
+      if ("status" in RESPONSE) {
+        RemoveJWT();
+        window.location.href = "/login";
         return;
       }
-      const USER = await FindProfileWithUser();
-      SetUser(USER);
+      // Set user
+      SetUser(RESPONSE);
     };
     GetData();
   }, []);

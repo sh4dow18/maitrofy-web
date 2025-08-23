@@ -88,7 +88,7 @@ export type UserResponse = {
         logo: string;
       };
       amount: number;
-    }[]
+    }[];
     points: number;
   };
   preferences: {
@@ -104,4 +104,8 @@ export type UserResponse = {
     developer: string;
     gameMode: string;
   };
+};
+export type ErrorResponse = {
+  status: string;
+  message: string;
 };

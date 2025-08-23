@@ -21,9 +21,9 @@ const REGEX: Record<string, RegExp> = {
   // Only valid e-mails
   // Example: sh4dow18@miteve.com or example@example.com
   email: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
-  // Only Strong Passwords
+  // Only Passwords
   // Example: Hola1234! or P@ssw0rd
-  password: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$/,
+  password: /^[a-zA-Z0-9]{8,}$/,
   // Only Readable Text
   // Example: Ramsés or Juan Tamarindo or Pepelefu
   text: /^[a-zA-Z0-9ÁÉÍÓÚÑáéíóúñ ]+$/,

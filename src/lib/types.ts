@@ -109,3 +109,20 @@ export type ErrorResponse = {
   status: string;
   message: string;
 };
+export type GameResponse = {
+  slug: string,
+  name: string,
+  summary: string,
+  cover: string,
+  background: string,
+  rating: number,
+  classification: string | null,
+  year: number,
+  video: string,
+  collection: string | null,
+  developer: string,
+  gameMode: string,
+  themes: string,
+  genres: string,
+  platforms: string
+}

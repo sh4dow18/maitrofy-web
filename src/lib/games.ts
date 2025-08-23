@@ -3,7 +3,7 @@ import gamesList from "@/db/games.json";
 import themesList from "@/db/themes.json";
 import genresList from "@/db/genres.json";
 import platformsList from "@/db/platforms.json";
-import { MinimalGameResponse } from "./types";
+import { ErrorResponse, GameResponse, MinimalGameResponse } from "./types";
 import { API } from "./admin";
 // Find Top 100 Games Function
 export async function FindTop100Games(): Promise<MinimalGameResponse[]> {
@@ -18,8 +18,20 @@ export function FindGameByName(name: string) {
     .slice(0, 30);
 }
 // Find Games by Slug Function
-export function FindGameBySlug(slug: string) {
-  return gamesList.find((game) => game.slug === slug);
+export async function FindGameBySlug(
+  slug: string
+): Promise<GameResponse | ErrorResponse> {
+  const RESPONSE = await fetch(`${API}/games/${slug}`, {
+    method: "GET",
+  });
+  // Get Data from JSON
+  const DATA = await RESPONSE.json();
+  // If Response is not 200, return it as Error Response
+  if (RESPONSE.ok === false) {
+    return DATA as ErrorResponse;
+  }
+  // If Response is 200, return it as Game Response
+  return DATA as GameResponse;
 }
 // Find Themes from Game with ids list Function
 export function FindThemesFromGame(themesIdsList: number[]) {
@@ -43,43 +55,20 @@ export function FindPlatformsFromGame(platformsIdsList: number[]) {
     .join(", ");
 }
 // Find Recommendations from Game with ids list Function
-export function FindRecomendationsFromGame(
-  slug: string,
-  collection: string | null,
-  developer: string | null,
-  theme: number
-) {
-  const COLLECTIONS_LIST =
-    collection !== null
-      ? gamesList.filter(
-          (game) => game.collection === collection && game.slug !== slug
-        )
-      : [];
-  const DEVELOPERS_LIST =
-    developer !== null
-      ? gamesList.filter(
-          (game) => game.developer === developer && game.slug !== slug
-        )
-      : [];
-  const THEMES_LIST = gamesList.filter(
-    (game) => game.themes[0] === theme && game.slug !== slug
-  );
-  const COMBINED_LIST = [
-    ...COLLECTIONS_LIST,
-    ...DEVELOPERS_LIST,
-    ...THEMES_LIST,
-  ];
-  const UNIQUE_GAMES_MAP = new Map<string, (typeof gamesList)[number]>();
-  for (const game of COMBINED_LIST) {
-    if (!UNIQUE_GAMES_MAP.has(game.slug)) {
-      UNIQUE_GAMES_MAP.set(game.slug, game);
-    }
+export async function FindRecomendationsFromGame(
+  slug: string
+): Promise<MinimalGameResponse[] | ErrorResponse> {
+  const RESPONSE = await fetch(`${API}/games/recommendations/${slug}`, {
+    method: "GET",
+  });
+  // Get Data from JSON
+  const DATA = await RESPONSE.json();
+  // If Response is not 200, return it as Error Response
+  if (RESPONSE.ok === false) {
+    return DATA as ErrorResponse;
   }
-  const NEW_LIST = Array.from(UNIQUE_GAMES_MAP.values()).slice(0, 15);
-  return NEW_LIST.map((game) => ({
-    cover: game.cover,
-    slug: game.slug,
-  }));
+  // If Response is 200, return it as Minimal Game Response Array
+  return DATA as MinimalGameResponse[];
 }
 // Find Games By Slugs with ids list Function
 export function FindGamesBySlugIds(slugsList: string[]) {

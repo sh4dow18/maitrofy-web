@@ -18,7 +18,7 @@ interface Props {
   title: string;
   cover: string | null;
   background: string | null;
-  date: string;
+  date: number;
   genres: string;
   platforms: string;
   themes: string;

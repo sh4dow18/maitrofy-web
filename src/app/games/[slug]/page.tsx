@@ -1,12 +1,6 @@
 // Game Content Page Requirements
 import { GameOverview, NotFound, Slider } from "@/components";
-import {
-  FindGameBySlug,
-  FindGenresFromGame,
-  FindPlatformsFromGame,
-  FindRecomendationsFromGame,
-  FindThemesFromGame,
-} from "@/lib/games";
+import { FindGameBySlug, FindRecomendationsFromGame } from "@/lib/games";
 import { Metadata } from "next";
 // Game Content Page  Props
 interface Props {
@@ -18,13 +12,15 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
   // Generate Metadata Constants
   const EXISTING_GAME = await FindGameBySlug(slug);
-  const TITLE = EXISTING_GAME?.name;
+  const TITLE =
+    "status" in EXISTING_GAME ? "No Encontrado" : EXISTING_GAME.name;
   // Returns Metadata Generated
   return {
-    title: EXISTING_GAME ? TITLE : "No Encontrado",
-    description: EXISTING_GAME
-      ? `Aqui se pueden encontrar toda la información referente al juego '${TITLE}'`
-      : "No Encontrado",
+    title: TITLE,
+    description:
+      TITLE !== "No Encontrado"
+        ? `Aqui se pueden encontrar toda la información referente al juego '${TITLE}'`
+        : TITLE,
   };
 }
 // Game Content Page Main Function
@@ -33,15 +29,9 @@ async function GameContentPage({ params }: Props) {
   const { slug } = await params;
   // Game Content Page Constants
   const CONTENT = await FindGameBySlug(slug);
-  const COLLECTION = CONTENT ? CONTENT.collection : null;
-  const DEVELOPER = CONTENT ? CONTENT.developer : null;
-  const THEMES = CONTENT ? CONTENT.themes[0] : null;
-  const RECOMENDATIONS_LIST =
-    THEMES !== null
-      ? FindRecomendationsFromGame(slug, COLLECTION, DEVELOPER, THEMES)
-      : [];
+  const RECOMENDATIONS_LIST = await FindRecomendationsFromGame(slug);
   // Returns Game Content Page
-  return CONTENT !== undefined ? (
+  return !("status" in CONTENT) ? (
     // Game Content Main Container
     <div className="flex flex-col gap-3 p-10 max-w-4xl min-[897px]:mx-auto">
       <GameOverview
@@ -49,9 +39,9 @@ async function GameContentPage({ params }: Props) {
         cover={CONTENT.cover}
         background={CONTENT.background}
         date={CONTENT.year}
-        themes={FindThemesFromGame(CONTENT.genres)}
-        genres={FindGenresFromGame(CONTENT.genres)}
-        platforms={FindPlatformsFromGame(CONTENT.platforms)}
+        themes={CONTENT.themes}
+        genres={CONTENT.genres}
+        platforms={CONTENT.platforms}
         overview={CONTENT.summary}
         rating={CONTENT.rating}
         classification={CONTENT.classification}
@@ -59,7 +49,7 @@ async function GameContentPage({ params }: Props) {
         gameMode={CONTENT.gameMode}
         trailer={CONTENT.video}
       />
-      {RECOMENDATIONS_LIST.length > 0 && (
+      {!("status" in RECOMENDATIONS_LIST) && RECOMENDATIONS_LIST.length > 0 && (
         <Slider title="Recomendaciones" contentList={RECOMENDATIONS_LIST} />
       )}
     </div>

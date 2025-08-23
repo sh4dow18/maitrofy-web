@@ -44,7 +44,7 @@ function Image({
               ? "(min-width: 816px) 816px, (min-width: 600px) 520px"
               : undefined
           }
-          className={`${className} animate-pulse`}
+          className={`${className} animate-pulse z-10`}
         />
       )}
       <NextImage
@@ -61,7 +61,7 @@ function Image({
             ? "(min-width: 816px) 816px, (min-width: 600px) 520px"
             : undefined
         }
-        className={`${className} ${loaded === false ? "hidden" : ""}`}
+        className={`${className} ${loaded === false ? "!hidden" : ""}`}
       />
     </>
   );

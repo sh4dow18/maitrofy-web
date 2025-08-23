@@ -72,3 +72,36 @@ export type MinimalGameResponse = {
   name: string;
   cover: string;
 };
+export type UserResponse = {
+  account: {
+    id: number;
+    name: string | null;
+    date: string;
+  };
+  statistics: {
+    gameLogsCount: number;
+    achievementsList: {
+      achievement: {
+        id: number;
+        name: string;
+        points: number;
+        logo: string;
+      };
+      amount: number;
+    }[]
+    points: number;
+  };
+  preferences: {
+    game: {
+      name: string;
+      cover: string | null;
+      background: string | null;
+    } | null;
+    theme: string;
+    genre: string;
+    platform: string;
+    collection: string;
+    developer: string;
+    gameMode: string;
+  };
+};

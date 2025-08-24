@@ -11,6 +11,7 @@ interface Props {
   messages: {
     success: string;
     loading: string;
+    error?: string;
   };
   className?: string;
   extraValidation?: boolean;
@@ -110,16 +111,19 @@ function Form({
     SetModalSettings({
       open: true,
       status: OK === true ? "success" : "error",
-      message: OK === true ? messages.success : (await RESPONSE.json()).message,
+      message:
+        OK === true
+          ? messages.success
+          : messages.error != undefined
+          ? messages.error
+          : (await RESPONSE.json()).message,
     });
   };
   // Returns Form Component
   return (
     <>
       <form
-        className={
-          className || "w-full flex flex-col gap-4"
-        }
+        className={className || "w-full flex flex-col gap-4"}
         ref={REFERENCE}
         onSubmit={FormOnSubmit}
       >

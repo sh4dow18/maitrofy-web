@@ -7,6 +7,7 @@ import { FindGamesByFilters, FindTop100Games } from "@/lib/games";
 import { FindAllGenres } from "@/lib/genres";
 import { FindAllPlatforms } from "@/lib/platforms";
 import { FindAllThemes } from "@/lib/themes";
+import { MinimalGameResponse } from "@/lib/types";
 import Link from "next/link";
 import { FormEvent, useEffect, useState } from "react";
 // Games Page Main Function
@@ -16,13 +17,11 @@ function GamesPage() {
     slug: "skeleton",
     cover: null,
   };
+  const DEFAULT_VALUE = [{ name: "Seleccionar", value: `${0}` }];
+  const gameSkeletonsList = Array(30).fill(GAME_SKELETON);
   // Games Page Hooks
-  const [searchList, SetSearchList] = useState<
-    {
-      slug: string;
-      cover: string | null;
-    }[]
-  >(Array(30).fill(GAME_SKELETON));
+  const [searchList, SetSearchList] =
+    useState<{ slug: string; cover: string }[]>(gameSkeletonsList);
   const [formLists, SetFormLists] = useState<{
     themesList: {
       name: string;
@@ -37,67 +36,91 @@ function GamesPage() {
       value: string;
     }[];
   }>({
-    themesList: [{ name: "Seleccionar", value: `${0}` }],
-    genresList: [{ name: "Seleccionar", value: `${0}` }],
-    platformsList: [{ name: "Seleccionar", value: `${0}` }],
+    themesList: DEFAULT_VALUE,
+    genresList: DEFAULT_VALUE,
+    platformsList: DEFAULT_VALUE,
   });
+  const [top100List, SetTop100List] = useState<MinimalGameResponse[]>([]);
   // Execute this use effect when page is loading
   useEffect(() => {
-    SetSearchList(
-      FindTop100Games().map((game) => ({
-        slug: game.slug,
-        cover: game.cover,
-      }))
-    );
-    const DEFAULT = [{ name: "Seleccionar", value: `${0}` }];
-    SetFormLists({
-      themesList: [
-        ...DEFAULT,
-        ...FindAllThemes().map((theme) => ({
-          name: theme.name,
-          value: `${theme.id}`,
-        })),
-      ],
-      genresList: [
-        ...DEFAULT,
-        ...FindAllGenres().map((genre) => ({
-          name: genre.name,
-          value: `${genre.id}`,
-        })),
-      ],
-      platformsList: [
-        ...DEFAULT,
-        ...FindAllPlatforms().map((platform) => ({
-          name: platform.name,
-          value: `${platform.id}`,
-        })),
-      ],
-    });
+    const GetData = async () => {
+      // Get data from API
+      const gamesList = await FindTop100Games();
+      const themesList = await FindAllThemes();
+      const genresList = await FindAllGenres();
+      const platformsList = await FindAllPlatforms();
+      // Set Top 100 List as Search List
+      SetSearchList(
+        gamesList.map((game) => ({
+          slug: game.slug,
+          cover: game.cover,
+        }))
+      );
+      // Set Themes, Genres and Platforms in Selects
+      SetFormLists({
+        themesList: [
+          ...DEFAULT_VALUE,
+          ...themesList.map((theme) => ({
+            name: theme.name,
+            value: `${theme.id}`,
+          })),
+        ],
+        genresList: [
+          ...DEFAULT_VALUE,
+          ...genresList.map((genre) => ({
+            name: genre.name,
+            value: `${genre.id}`,
+          })),
+        ],
+        platformsList: [
+          ...DEFAULT_VALUE,
+          ...platformsList.map((platform) => ({
+            name: platform.name,
+            value: `${platform.id}`,
+          })),
+        ],
+      });
+      // Save Top 100 List when Reset
+      SetTop100List(gamesList);
+    };
+    GetData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   // Function that allows to set the new filtered list in search list
-  const SearchSubmit = (event: FormEvent<HTMLFormElement>) => {
+  const SearchSubmit = async (event: FormEvent<HTMLFormElement>) => {
     // Prevents the page reload
     event.preventDefault();
     // Get Form
     const FORM = event.target as HTMLFormElement;
-    // The all values from Form
+    // Get all values from Form
     const NAME = FORM.gameName.value;
     const THEME = FORM.theme.value;
     const GENRE = FORM.genre.value;
     const PLATFORM = FORM.platform.value;
+    // If each value has no valid value, return
+    if (NAME == "" && THEME == 0 && GENRE == 0 && PLATFORM == 0) {
+      return;
+    }
+    // Set Search List with Skeleton List
+    SetSearchList(gameSkeletonsList);
+    // Get a new search list filtered by name, theme, genre and platform from API 
+    const newSearchList = await FindGamesByFilters(NAME, THEME, GENRE, PLATFORM);
     // Set new Search List
     SetSearchList(
-      FindGamesByFilters(
-        NAME !== "" ? NAME : null,
-        THEME !== "0" ? Number.parseInt(THEME) : null,
-        GENRE !== "0" ? Number.parseInt(GENRE) : null,
-        PLATFORM !== "0" ? Number.parseInt(PLATFORM) : null
-      )
+      newSearchList.map((game) => ({
+        slug: game.slug,
+        cover: game.cover,
+      }))
     );
   };
   // Function that allows to set the original top 100 games
   const ResetSearch = () => {
-    SetSearchList(FindTop100Games());
+    SetSearchList(
+      top100List.map((game) => ({
+        slug: game.slug,
+        cover: game.cover,
+      }))
+    );
   };
   // Returns Games Page
   return (

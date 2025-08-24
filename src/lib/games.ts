@@ -1,123 +1,65 @@
 // Games Library Requirements
-import gamesList from "@/db/games.json";
-import themesList from "@/db/themes.json";
-import genresList from "@/db/genres.json";
-import platformsList from "@/db/platforms.json";
-// Find Top 50 Games Function
-export function FindTop100Games() {
-  return gamesList.slice(0, 100);
-}
-// Find Top 30 Games by Name Function
-export function FindGameByName(name: string) {
-  return gamesList
-    .filter((game) => game.name.toLowerCase().includes(name.toLowerCase()))
-    .slice(0, 30);
+import { ErrorResponse, GameResponse, MinimalGameResponse } from "./types";
+import { API } from "./admin";
+// Find Top 100 Games Function
+export async function FindTop100Games(): Promise<MinimalGameResponse[]> {
+  return await fetch(`${API}/games`, {
+    method: "GET",
+  }).then((response) => response.json());
 }
 // Find Games by Slug Function
-export function FindGameBySlug(slug: string) {
-  return gamesList.find((game) => game.slug === slug);
-}
-// Find Themes from Game with ids list Function
-export function FindThemesFromGame(themesIdsList: number[]) {
-  return themesList
-    .filter((theme) => themesIdsList.includes(theme.id))
-    .map((theme) => theme.name)
-    .join(", ");
-}
-// Find Genres from Game with ids list Function
-export function FindGenresFromGame(genresIdsList: number[]) {
-  return genresList
-    .filter((genre) => genresIdsList.includes(genre.id))
-    .map((genre) => genre.name)
-    .join(", ");
-}
-// Find Platforms from Game with ids list Function
-export function FindPlatformsFromGame(platformsIdsList: number[]) {
-  return platformsList
-    .filter((platform) => platformsIdsList.includes(platform.id))
-    .map((platform) => platform.name)
-    .join(", ");
+export async function FindGameBySlug(
+  slug: string
+): Promise<GameResponse | ErrorResponse> {
+  const RESPONSE = await fetch(`${API}/games/${slug}`, {
+    method: "GET",
+  });
+  // Get Data from JSON
+  const DATA = await RESPONSE.json();
+  // If Response is not 200, return it as Error Response
+  if (RESPONSE.ok === false) {
+    return DATA as ErrorResponse;
+  }
+  // If Response is 200, return it as Game Response
+  return DATA as GameResponse;
 }
 // Find Recommendations from Game with ids list Function
-export function FindRecomendationsFromGame(
-  slug: string,
-  collection: string | null,
-  developer: string | null,
-  theme: number
-) {
-  const COLLECTIONS_LIST =
-    collection !== null
-      ? gamesList.filter(
-          (game) => game.collection === collection && game.slug !== slug
-        )
-      : [];
-  const DEVELOPERS_LIST =
-    developer !== null
-      ? gamesList.filter(
-          (game) => game.developer === developer && game.slug !== slug
-        )
-      : [];
-  const THEMES_LIST = gamesList.filter(
-    (game) => game.themes[0] === theme && game.slug !== slug
-  );
-  const COMBINED_LIST = [
-    ...COLLECTIONS_LIST,
-    ...DEVELOPERS_LIST,
-    ...THEMES_LIST,
-  ];
-  const UNIQUE_GAMES_MAP = new Map<string, (typeof gamesList)[number]>();
-  for (const game of COMBINED_LIST) {
-    if (!UNIQUE_GAMES_MAP.has(game.slug)) {
-      UNIQUE_GAMES_MAP.set(game.slug, game);
-    }
+export async function FindRecomendationsFromGame(
+  slug: string
+): Promise<MinimalGameResponse[] | ErrorResponse> {
+  const RESPONSE = await fetch(`${API}/games/recommendations/${slug}`, {
+    method: "GET",
+  });
+  // Get Data from JSON
+  const DATA = await RESPONSE.json();
+  // If Response is not 200, return it as Error Response
+  if (RESPONSE.ok === false) {
+    return DATA as ErrorResponse;
   }
-  const NEW_LIST = Array.from(UNIQUE_GAMES_MAP.values()).slice(0, 15);
-  return NEW_LIST.map((game) => ({
-    cover: game.cover,
-    slug: game.slug,
-  }));
-}
-// Find Games By Slugs with ids list Function
-export function FindGamesBySlugIds(slugsList: string[]) {
-  return gamesList.filter((game) => slugsList.includes(game.slug));
+  // If Response is 200, return it as Minimal Game Response Array
+  return DATA as MinimalGameResponse[];
 }
 // Find the Top 100 Games by Filters Function
-export function FindGamesByFilters(
-  name: string | null,
-  theme: number | null,
-  genre: number | null,
-  platform: number | null
-) {
-  // If no filter was submitted, return top 100 games
-  if (name === null && theme === null && genre === null && platform === null) {
-    return FindTop100Games();
+export async function FindGamesByFilters(
+  name: string,
+  theme: number,
+  genre: number,
+  platform: number
+): Promise<MinimalGameResponse[]> {
+  const SEARCH_URL = new URLSearchParams();
+  if (name != "") {
+    SEARCH_URL.append("name", name);
   }
-  // Filtered List
-  let filteredGamesList = gamesList;
-  // If name was submitted, filtered by lowarcase name
-  if (name !== null) {
-    filteredGamesList = filteredGamesList.filter((game) =>
-      game.name.toLowerCase().includes(name.toLowerCase())
-    );
+  if (theme != 0) {
+    SEARCH_URL.append("themeId", `${theme}`);
   }
-  // If theme was submitted, filtered by theme id number
-  if (theme !== null) {
-    filteredGamesList = filteredGamesList.filter((game) =>
-      game.themes.includes(theme)
-    );
+  if (genre != 0) {
+    SEARCH_URL.append("genreId", `${genre}`);
   }
-  // If genre was submitted, filtered by genre id number
-  if (genre !== null) {
-    filteredGamesList = filteredGamesList.filter((game) =>
-      game.genres.includes(genre)
-    );
+  if (platform != 0) {
+    SEARCH_URL.append("platformId", `${platform}`);
   }
-  // If platform was submitted, filtered by platform id number
-  if (platform !== null) {
-    filteredGamesList = filteredGamesList.filter((game) =>
-      game.platforms.includes(platform)
-    );
-  }
-  // Return Top 100 Games in Filtered Games List
-  return filteredGamesList.slice(0, 100);
+  return await fetch(`${API}/games/search?${SEARCH_URL}`, {
+    method: "GET",
+  }).then((response) => response.json());
 }

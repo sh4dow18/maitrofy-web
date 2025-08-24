@@ -3,192 +3,103 @@
 // Profile Page Requirements
 import { Image, ProfileSection } from "@/components";
 import { default as NextImage } from "next/image";
-import { GetJWT, RemoveJWT } from "@/lib/session";
-import { User } from "@/lib/types";
-import { GetUser } from "@/lib/users";
+import { RemoveJWT } from "@/lib/session";
+import { UserResponse } from "@/lib/types";
 import {
   BookmarkIcon,
   CalendarDaysIcon,
-  TrophyIcon,
   UserGroupIcon,
-  UserIcon,
 } from "@heroicons/react/16/solid";
 import { useEffect, useState } from "react";
-import { FaCheckCircle } from "react-icons/fa";
-import { MdCollectionsBookmark, MdEmail, MdFactory } from "react-icons/md";
+import { MdCollectionsBookmark, MdFactory } from "react-icons/md";
 import { AiFillExperiment } from "react-icons/ai";
-import { GiFinishLine, GiJumpAcross } from "react-icons/gi";
+import { GiJumpAcross } from "react-icons/gi";
 import { FaBook } from "react-icons/fa6";
 import { BiSolidGame } from "react-icons/bi";
+import { FindProfileWithUser } from "@/lib/users";
 // Profile Page Main Function
 function ProfilePage() {
   // Profile Page Hooks
-  const [user, SetUser] = useState<User>({
-    backgroundImage: null,
-    profileImage: null,
-    name: "Usuario No Encontrado",
-    email: "example@example.com",
-    date: "--/--/----",
-    role: "No Encontrado",
-    level: "No Encontrado",
-    status: "Estado no Encontrado",
-    gamesCount: "-",
-    completed: "-",
-    platinum: "-",
-    pseudoPlatinum: "-",
-    offlinePlatinum: "-",
-    psicoPlatinum: "-",
-    points: "-",
-    ranking: "#-",
-    favoriteGame: "Juego No Encontrado",
-    favoriteTheme: "Tema No Encontrada",
-    favoriteGenre: "Género No Encontrada",
-    favoritePlatform: "Plataforma No Encontrada",
-    favoriteCollection: "Colección No Encontrada",
-    favoriteDeveloper: "Desarrolladora No Encontrada",
-    favoriteGameMode: "Modo de Juego No Encontrado",
+  const [user, SetUser] = useState<UserResponse>({
+    account: {
+      id: 0,
+      name: "Cargando...",
+      date: "--/--/----",
+    },
+    statistics: {
+      gameLogsCount: 0,
+      achievementsList: [],
+      points: 0,
+    },
+    preferences: {
+      game: {
+        name: "Cargando...",
+        cover: null,
+        background: null,
+      },
+      theme: "Cargando...",
+      genre: "Cargando...",
+      platform: "Cargando...",
+      collection: "Cargando...",
+      developer: "Cargando...",
+      gameMode: "Cargando...",
+    },
   });
   // Execute this useEffect when page is loading
   useEffect(() => {
-    const JWT = GetJWT() ?? "";
-    if (JWT === undefined) {
-      return;
-    }
-    const USER = GetUser(JWT);
-    if (USER === null) {
-      return;
-    }
-    SetUser(USER);
+    const GetData = async () => {
+      // Find Profile with User in JWT
+      const RESPONSE = await FindProfileWithUser();
+      // If Status exists in Response, that is Error Response, so, return to login and remove JWT
+      if ("status" in RESPONSE) {
+        RemoveJWT();
+        window.location.href = "/login";
+        return;
+      }
+      // Set user
+      SetUser(RESPONSE);
+    };
+    GetData();
   }, []);
   // Profile Page Constants
   const INFORMATION_LIST = [
     {
-      title: "Correo Electrónico",
-      value: user.email,
-      logo: <MdEmail className="w-10 h-10 fill-gray-200" />,
-    },
-    {
       title: "Creado",
-      value: user.date,
+      value: user.account.date,
       logo: <CalendarDaysIcon className="w-10 fill-green-200" />,
-    },
-    {
-      title: "Estado",
-      value: user.status,
-      logo: <FaCheckCircle className="w-10 h-10 fill-amber-200" />,
-    },
-    {
-      title: "Rol",
-      value: user.role,
-      logo: <UserIcon className="w-10 fill-cyan-200" />,
     },
   ];
   const STATISTICS_LIST = [
     {
-      title: "Nivel",
-      value: user.level,
-      logo: <TrophyIcon className="w-10 fill-orange-200" />,
-    },
-    {
       title: "Registrados",
-      value: user.gamesCount,
+      value: user.statistics.gameLogsCount,
       logo: <BookmarkIcon className="w-10 fill-lime-300" />,
     },
     {
-      title: "Completados",
-      value: user.completed,
-      logo: (
-        <NextImage
-          src="/achievements/completed.svg"
-          alt="Completed Trophy Logo"
-          width={52}
-          height={52}
-          className="w-[52px] h-[52px]"
-        />
-      ),
-    },
-    {
-      title: "Platinos",
-      value: user.platinum,
-      logo: (
-        <NextImage
-          src="/achievements/platinum.svg"
-          alt="Platinum Trophy Logo"
-          width={52}
-          height={52}
-          className="w-[52px] h-[52px]"
-        />
-      ),
-    },
-    {
-      title: "PseudoPlatinos",
-      value: user.pseudoPlatinum,
-      logo: (
-        <NextImage
-          src="/achievements/pseudo.svg"
-          alt="Pseudo Platinum Trophy Logo"
-          width={52}
-          height={52}
-          className="w-[52px] h-[52px]"
-        />
-      ),
-    },
-    {
-      title: "Platinos Offline",
-      value: user.offlinePlatinum,
-      logo: (
-        <NextImage
-          src="/achievements/offline.svg"
-          alt="Offline Platinum Trophy Logo"
-          width={52}
-          height={52}
-          className="w-[52px] h-[52px]"
-        />
-      ),
-    },
-    {
-      title: "PsicoPlatinos",
-      value: user.psicoPlatinum,
-      logo: (
-        <NextImage
-          src="/achievements/psico.svg"
-          alt="PsicoPlatinum Trophy Logo"
-          width={52}
-          height={52}
-          className="w-[52px] h-[52px]"
-        />
-      ),
-    },
-    {
       title: "Puntos",
-      value: user.points,
+      value: user.statistics.points,
       logo: <AiFillExperiment className="w-10 h-10 fill-purple-200" />,
-    },
-    {
-      title: "Ranking",
-      value: user.ranking,
-      logo: <GiFinishLine className="w-10 h-10 fill-gray-200" />,
     },
   ];
   const PREFERENCES_LIST = [
     {
       title: "Juego Preferido",
-      value: user.favoriteGame,
+      value: user.preferences.game ? user.preferences.game.name : "No Posee",
       logo: <BiSolidGame className="w-10 h-10 fill-yellow-200" />,
     },
     {
       title: "Tema Preferido",
-      value: user.favoriteTheme,
+      value: user.preferences.theme,
       logo: <FaBook className="w-10 h-10 fill-[#D2B48C]" />,
     },
     {
       title: "Género Preferido",
-      value: user.favoriteGenre,
+      value: user.preferences.genre,
       logo: <GiJumpAcross className="w-10 h-10 fill-fuchsia-200" />,
     },
     {
       title: "Plataforma Preferida",
-      value: user.favoritePlatform,
+      value: user.preferences.platform,
       logo: (
         <NextImage
           src="/favicon.svg"
@@ -201,17 +112,17 @@ function ProfilePage() {
     },
     {
       title: "Colección Preferida",
-      value: user.favoriteCollection,
+      value: user.preferences.collection,
       logo: <MdCollectionsBookmark className="w-10 h-10 fill-indigo-300" />,
     },
     {
       title: "Desarrolladora Preferida",
-      value: user.favoriteDeveloper,
+      value: user.preferences.developer,
       logo: <MdFactory className="w-10 h-10 fill-red-200" />,
     },
     {
       title: "Modo Preferido",
-      value: user.favoriteGameMode,
+      value: user.preferences.gameMode,
       logo: <UserGroupIcon className="w-10 fill-blue-300" />,
     },
   ];
@@ -225,8 +136,9 @@ function ProfilePage() {
           {/* Profile Page Background Image */}
           <Image
             src={
-              user.backgroundImage !== null
-                ? `https://images.igdb.com/igdb/image/upload/t_original/${user.backgroundImage}`
+              user.preferences.game !== null &&
+              user.preferences.game.background != null
+                ? `https://images.igdb.com/igdb/image/upload/t_original/${user.preferences.game.background}`
                 : "/404.png"
             }
             alt="Background Image"
@@ -239,8 +151,8 @@ function ProfilePage() {
           <div className="flex flex-col gap-5 min-[600px]:flex-row min-[600px]:place-content-between min-[600px]:pt-30 min-[600px]:px-3 min-[600px]:pb-3">
             {/* Profile Page Image Cover */}
             <Image
-              src={user.profileImage || "/profile.webp"}
-              alt={`${user.name} Profile Image`}
+              src={`/profile-${user.account.id}.webp`}
+              alt={`${user.account.name} Profile Image`}
               skeleton="profile"
               width={600}
               height={600}
@@ -253,7 +165,7 @@ function ProfilePage() {
         <section className="flex flex-col gap-3">
           {/* Profile Page Description Main Title */}
           <h1 className="text-4xl text-center leading-14 font-bold text-gray-300 min-[351px]:text-5xl min-[600px]:text-4xl min-[600px]:text-left min-[600px]:leading-12">
-            {user.name}
+            {user.account.name}
           </h1>
           {/* Account Information Profile Section */}
           <ProfileSection
@@ -264,6 +176,25 @@ function ProfilePage() {
           <ProfileSection title="Estadísticas" list={STATISTICS_LIST} />
           {/* Preferences Profile Section */}
           <ProfileSection title="Preferencias" list={PREFERENCES_LIST} />
+          {/* Achievements Profile Section */}
+          {user.statistics.achievementsList.length > 0 && (
+            <ProfileSection
+              title="Trofeos"
+              list={user.statistics.achievementsList.map((achievement) => ({
+                title: achievement.achievement.name,
+                value: achievement.amount,
+                logo: (
+                  <NextImage
+                    src={`/achievements/${achievement.achievement.logo}.svg`}
+                    alt={`${achievement.achievement.name} Trophy Logo`}
+                    width={52}
+                    height={52}
+                    className="w-[52px] h-[52px]"
+                  />
+                ),
+              }))}
+            />
+          )}
         </section>
         {/* Profile Page CTA Section */}
         <section className="flex flex-col gap-5 mt-5 min-[400px]:grid min-[400px]:grid-cols-2 min-[400px]:gap-5">

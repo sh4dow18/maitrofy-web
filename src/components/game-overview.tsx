@@ -16,9 +16,9 @@ import { AiFillExperiment } from "react-icons/ai";
 // Game Overview Props
 interface Props {
   title: string;
-  cover: string | null;
-  background: string | null;
-  date: string;
+  cover: string;
+  background: string;
+  date: number;
   genres: string;
   platforms: string;
   themes: string;
@@ -29,16 +29,16 @@ interface Props {
   gameMode: string | null | undefined;
   trailer: string | null;
   log?: {
+    date: string;
     achievement: {
       name: string;
-      value: string;
+      value: number;
       logo: string | null;
-    };
-    platform: string;
-    rating: number;
-    date: string;
+    } | null;
+    platform: string | null;
+    rating: number | null;
     note: string | null;
-    time: number;
+    time: number | null;
   };
 }
 // Game Overview Main Container
@@ -107,11 +107,14 @@ function GameOverview({
   const LOG_INFORMATION_LIST = [
     {
       title: "Logro",
-      value: log !== undefined ? log.achievement.name : "",
+      value:
+        log !== undefined && log.achievement != null
+          ? log.achievement.name
+          : "No Posee",
       logo: (
         <NextImage
           src={
-            log !== undefined && log.achievement.logo !== null
+            log !== undefined && log.achievement != null
               ? `/achievements/${log.achievement.logo}.svg`
               : "/favicon.svg"
           }
@@ -124,7 +127,11 @@ function GameOverview({
     },
     {
       title: "Valor de Logro",
-      value: log !== undefined ? `${log.achievement.value} Puntos` : "",
+      value: `${
+        log !== undefined && log.achievement != null
+          ? log.achievement.value
+          : "0"
+      } Puntos`,
       logo: <AiFillExperiment className="w-12 h-12 fill-purple-200" />,
     },
     {
@@ -165,9 +172,9 @@ function GameOverview({
         {/* Game Overview Background Image */}
         <Image
           src={
-            background !== null
+            background !== "null"
               ? `https://images.igdb.com/igdb/image/upload/t_original/${background}`
-              : "/skeletons/background.webp"
+              : "/404.png"
           }
           alt="Fondo decorativo"
           skeleton="background"
@@ -180,7 +187,7 @@ function GameOverview({
           {/* Game Overview Image Cover */}
           <Image
             src={
-              cover !== null
+              cover !== "null"
                 ? `https://images.igdb.com/igdb/image/upload/t_original/${cover}`
                 : "/skeletons/cover.webp"
             }
@@ -207,17 +214,21 @@ function GameOverview({
               <div className="flex place-content-center place-items-center gap-2 bg-gray-800 rounded-md px-2 shadow shadow-gray-300/50 p-1">
                 <NextImage
                   src={
-                    log.achievement.logo !== null
+                    log.achievement !== null
                       ? `/achievements/${log.achievement.logo}.svg`
                       : "/favicon.svg"
                   }
-                  alt={`${log.achievement.value} Trophy Logo`}
+                  alt={`${
+                    log.achievement != null ? log.achievement.value : "Playing"
+                  } Trophy Logo`}
                   width={32}
                   height={32}
                   className="my-[5px] w-[32px] h-[32px]"
                 />
                 <span className="text-lg text-gray-100">
-                  <strong>{log.achievement.name}</strong>
+                  <strong>
+                    {log.achievement != null ? log.achievement.name : "Jugando"}
+                  </strong>
                 </span>
               </div>
             )}
@@ -228,7 +239,7 @@ function GameOverview({
       <section className="flex flex-col gap-3">
         {/* Game Overview Description Main Title */}
         <h1 className="text-4xl text-center leading-14 font-bold text-gray-300 min-[351px]:text-5xl min-[600px]:text-4xl min-[600px]:text-left min-[600px]:leading-12">
-          {title} ({date})
+          {title} ({date !== 0 ? date : "-"})
         </h1>
         {/* Game Overview Description Second Container */}
         <section className="flex flex-col gap-1">

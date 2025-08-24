@@ -1,15 +1,7 @@
 "use client";
 import { GameOverview, NotFound } from "@/components";
-import { FindAchievementById } from "@/lib/achievements";
-import {
-  FindGameBySlug,
-  FindGenresFromGame,
-  FindPlatformsFromGame,
-  FindThemesFromGame,
-} from "@/lib/games";
-import { FindPlatformNameBySlug } from "@/lib/platforms";
-import { GetJWT } from "@/lib/session";
-import { Game } from "@/lib/types";
+import { RemoveJWT } from "@/lib/session";
+import { GameLogResponse } from "@/lib/types";
 import { FindUserLog } from "@/lib/users";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -17,75 +9,43 @@ function BacklogOverviewPage() {
   // Game Content Page Constants
   const PARAMS = useParams();
   const SLUG = typeof PARAMS.slug === "string" ? PARAMS.slug : "";
-  const LOADING_GAME = {
-    name: "Cargando",
-    summary:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas interdum tellus sit amet varius luctus. Cras ac arcu ipsum. Maecenas viverra sem at vehicula vulputate. Suspendisse eget tincidunt nibh, id laoreet ipsum. Integer enim lacus, faucibus ut sapien id, commodo feugiat turpis. Nulla venenatis placerat lacus, ut commodo diam euismod a. In convallis tristique sapien nec fermentum. In hac habitasse platea dictumst. Cras feugiat sed tortor sit amet venenatis. Vivamus vel neque quam. Pellentesque dolor risus, blandit eget aliquam a, mattis id augue.",
-    cover: null,
-    background: null,
-    rating: 0.0,
-    classification: "-",
-    year: "-",
+  const [log, SetLog] = useState<GameLogResponse>({
     slug: "loading",
-    video: "-",
-    genres: [],
-    platforms: [],
-    themes: [],
-    collection: "Cargando...",
-    developer: "Cargando...",
-    gameMode: "Cargando...",
-  };
-  const [log, SetLog] = useState<{
-    game: Game;
-    achievement: { name: string; value: string; logo: string | null };
-    platform: string;
-    rating: number;
-    date: string;
-    note: string | null;
-    time: number;
-  } | null>({
-    game: LOADING_GAME,
-    achievement: {
-      name: "Cargando...",
-      value: "-",
-      logo: null,
-    },
-    platform: "Cargando...",
-    rating: 0.0,
+    rating: null,
     date: "--/--/----",
-    note: null,
-    time: 0,
+    review: null,
+    hoursSpend: null,
+    game: {
+      slug: "loading",
+      name: "Cargando",
+      summary:
+        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas interdum tellus sit amet varius luctus. Cras ac arcu ipsum. Maecenas viverra sem at vehicula vulputate. Suspendisse eget tincidunt nibh, id laoreet ipsum. Integer enim lacus, faucibus ut sapien id, commodo feugiat turpis. Nulla venenatis placerat lacus, ut commodo diam euismod a. In convallis tristique sapien nec fermentum. In hac habitasse platea dictumst. Cras feugiat sed tortor sit amet venenatis. Vivamus vel neque quam. Pellentesque dolor risus, blandit eget aliquam a, mattis id augue.",
+      cover: "null",
+      background: "null",
+      rating: 0.0,
+      classification: "-",
+      year: 0,
+      video: "-",
+      collection: "Cargando...",
+      developer: "Cargando...",
+      gameMode: "Cargando...",
+      themes: "-",
+      genres: "-",
+      platforms: "-",
+    },
+    platform: null,
+    achievement: null,
   });
   useEffect(() => {
     const GetData = async () => {
-      const CONTENT = await FindGameBySlug(SLUG);
-      const EMAIL = GetJWT();
-      if (CONTENT === undefined || EMAIL === undefined) {
-        SetLog(null);
+      const RESPONSE = await FindUserLog(SLUG);
+      // If Status exists in Response, that is Error Response, so, return to login and remove JWT
+      if ("status" in RESPONSE) {
+        RemoveJWT();
+        window.location.href = "/login";
         return;
       }
-      const LOG = await FindUserLog(EMAIL, CONTENT.slug);
-      if (LOG === null || LOG === undefined) {
-        SetLog(null);
-        return;
-      }
-      const ACHIEVEMENT = FindAchievementById(LOG.achievement ?? 0);
-      SetLog({
-        game: CONTENT,
-        achievement: {
-          name:
-            typeof ACHIEVEMENT === "object"
-              ? ACHIEVEMENT.name
-              : "No Completado",
-          value: typeof ACHIEVEMENT === "object" ? `${ACHIEVEMENT.value}` : "-",
-          logo: typeof ACHIEVEMENT === "object" ? ACHIEVEMENT.logo : null,
-        },
-        platform: FindPlatformNameBySlug(LOG.platform),
-        rating: LOG.rating !== null ? LOG.rating : 0.0,
-        date: LOG.date !== null ? LOG.date : "--/--/----",
-        note: LOG.note,
-        time: LOG.time,
-      });
+      SetLog(RESPONSE);
     };
     GetData();
   }, [SLUG]);
@@ -98,13 +58,9 @@ function BacklogOverviewPage() {
         cover={log.game.cover}
         background={log.game.background}
         date={log.game.year}
-        themes={FindThemesFromGame(log.game.genres)}
-        genres={FindGenresFromGame(log.game.genres)}
-        platforms={
-          log.game.platforms.length > 0
-            ? FindPlatformsFromGame(log.game.platforms)
-            : "N/A"
-        }
+        themes={log.game.themes}
+        genres={log.game.genres}
+        platforms={log.game.platforms}
         overview={log.game.summary}
         rating={log.game.rating}
         classification={log.game.classification}
@@ -112,12 +68,19 @@ function BacklogOverviewPage() {
         gameMode={log.game.gameMode}
         trailer={log.game.video}
         log={{
-          achievement: log.achievement,
+          achievement:
+            log.achievement != null
+              ? {
+                  name: log.achievement.name,
+                  value: log.achievement.points,
+                  logo: log.achievement.logo,
+                }
+              : null,
           platform: log.platform,
           rating: log.rating,
           date: log.date,
-          note: log.note,
-          time: log.time
+          note: log.review,
+          time: log.hoursSpend,
         }}
       />
     </div>

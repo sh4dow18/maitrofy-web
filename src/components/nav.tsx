@@ -10,13 +10,10 @@ import {
 } from "@heroicons/react/16/solid";
 import Link from "next/link";
 import MainLogo from "./main-logo";
-import { GetJWT } from "@/lib/session";
-import Image from "next/image";
 // Nav Main Function
 function Nav() {
   // Nav Hooks
   const [open, SetOpen] = useState<boolean>(false);
-  const [profileImage, SetProfileImage] = useState<string | null>(null);
   const menuRef = useRef<HTMLDivElement>(null);
   const CURRENT_PAGE = usePathname();
   // Nav Pages List to use in Mobile Nav and Desktop Nav
@@ -25,14 +22,6 @@ function Nav() {
     { href: "/games", name: "Juegos", reload: false },
     { href: "/backlog", name: "Mi Trayectoria", reload: false },
   ];
-  // Execute this use effect when page is loading
-  useEffect(() => {
-    const EMAIL = GetJWT();
-    if (EMAIL === undefined) {
-      return;
-    }
-    SetProfileImage(`/${EMAIL}.webp`);
-  }, []);
   // Execute this use effect to close the menu when clicking outside it
   useEffect(() => {
     const ClickOutside = (event: MouseEvent) => {
@@ -76,10 +65,7 @@ function Nav() {
             className={`w-7 mx-auto ${open ? "" : "hidden"}`.trimEnd()}
           />
         </button>
-        <Link
-          href="/"
-          className="w-[120px] mx-auto min-[1035px]:m-3"
-        >
+        <Link href="/" className="w-[120px] mx-auto min-[1035px]:m-3">
           <MainLogo width={120} height={25} className="w-[120px] h-[25px]" />
         </Link>
         {/* Desktop Nav */}
@@ -114,17 +100,7 @@ function Nav() {
         </div>
         {/* Profile Link */}
         <Link href="/profile" className="ml-auto flex gap-5">
-          {profileImage !== null ? (
-            <Image
-              src={profileImage}
-              alt="Profile Image"
-              width={28}
-              height={28}
-              className="w-7 h-7 mr-2 cursor-pointer rounded-full transition-all hover:scale-125"
-            />
-          ) : (
-            <UserCircleIcon className="w-7 h-7 mr-2 cursor-pointer transition-all fill-white hover:scale-125" />
-          )}
+          <UserCircleIcon className="w-7 h-7 mr-2 cursor-pointer transition-all fill-white hover:scale-125" />
         </Link>
       </div>
       {/* Mobile Nav */}

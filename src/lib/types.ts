@@ -72,6 +72,12 @@ export type MinimalGameResponse = {
   name: string;
   cover: string;
 };
+export type AchievementResponse = {
+  id: number;
+  name: string;
+  points: number;
+  logo: string;
+};
 export type UserResponse = {
   account: {
     id: number;
@@ -81,12 +87,7 @@ export type UserResponse = {
   statistics: {
     gameLogsCount: number;
     achievementsList: {
-      achievement: {
-        id: number;
-        name: string;
-        points: number;
-        logo: string;
-      };
+      achievement: AchievementResponse;
       amount: number;
     }[];
     points: number;
@@ -110,19 +111,37 @@ export type ErrorResponse = {
   message: string;
 };
 export type GameResponse = {
+  slug: string;
+  name: string;
+  summary: string;
+  cover: string;
+  background: string;
+  rating: number;
+  classification: string | null;
+  year: number;
+  video: string;
+  collection: string | null;
+  developer: string;
+  gameMode: string;
+  themes: string;
+  genres: string;
+  platforms: string;
+};
+export type MinimalGameLogResponse = {
+  slug: string;
+  rating: number | null;
+  date: string;
+  game: MinimalGameResponse;
+  platform: string;
+  achievement: AchievementResponse | null;
+};
+export type GameLogResponse = {
   slug: string,
-  name: string,
-  summary: string,
-  cover: string,
-  background: string,
-  rating: number,
-  classification: string | null,
-  year: number,
-  video: string,
-  collection: string | null,
-  developer: string,
-  gameMode: string,
-  themes: string,
-  genres: string,
-  platforms: string
+  rating: number | null,
+  date: string,
+  review: string | null,
+  hoursSpend: number | null,
+  game: GameResponse,
+  platform: string | null,
+  achievement: AchievementResponse | null
 }

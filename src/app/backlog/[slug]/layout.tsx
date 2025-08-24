@@ -11,13 +11,15 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
   // Generate Metadata Constants
   const EXISTING_GAME = await FindGameBySlug(slug);
-  const TITLE = EXISTING_GAME?.name;
+  const TITLE =
+    "status" in EXISTING_GAME ? "No Encontrado" : EXISTING_GAME.name;
   // Returns Metadata Generated
   return {
-    title: EXISTING_GAME ? TITLE : "No Encontrado",
-    description: EXISTING_GAME
-      ? `Aqui se pueden encontrar toda la información referente al backlog '${TITLE}' del usuario logueado`
-      : "No Encontrado",
+    title: TITLE,
+    description:
+      TITLE !== "No Encontrado"
+        ? `Aqui se pueden encontrar toda la información referente al juego '${TITLE}'`
+        : TITLE,
   };
 }
 // Backlog Layout Main Function

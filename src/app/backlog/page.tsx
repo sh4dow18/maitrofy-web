@@ -2,8 +2,8 @@
 "use client";
 // Backlog Page Requirements
 import { BacklogCardBadge, Image } from "@/components";
-import { GetJWT } from "@/lib/session";
-import { GameLog } from "@/lib/types";
+import { RemoveJWT } from "@/lib/session";
+import { MinimalGameLogResponse } from "@/lib/types";
 import { GetUserBacklog } from "@/lib/users";
 import Link from "next/link";
 import { useEffect, useState } from "react";
@@ -13,21 +13,19 @@ import { CalendarDaysIcon, StarIcon } from "@heroicons/react/16/solid";
 function BacklogPage() {
   // Backlog Page Constants
   const BACKLOG_SKELETON = {
+    slug: "cargando",
+    rating: null,
+    date: "--/--/----",
     game: {
-      cover: null,
-      name: "Cargando...",
-      slug: "skeleton",
-    },
-    achievement: {
-      name: "Cargando...",
-      logo: null,
+      slug: "cargando",
+      name: "Cargando",
+      cover: "cargando",
     },
     platform: "Cargando...",
-    rating: null,
-    date: null,
+    achievement: null,
   };
   // Backlog Page Hooks
-  const [gamesList, SetGamesList] = useState<GameLog[]>([
+  const [gamesList, SetGamesList] = useState<MinimalGameLogResponse[]>([
     BACKLOG_SKELETON,
     BACKLOG_SKELETON,
     BACKLOG_SKELETON,
@@ -37,12 +35,17 @@ function BacklogPage() {
   ]);
   // Execute this useEffect when page is loading
   useEffect(() => {
-    const JWT = GetJWT() ?? "";
-    if (JWT === undefined) {
-      return;
-    }
-    const GAMES_LIST = GetUserBacklog(JWT);
-    SetGamesList(GAMES_LIST);
+    const GetData = async () => {
+      const RESPONSE = await GetUserBacklog();
+      // If Status exists in Response, that is Error Response, so, return to login and remove JWT
+      if ("status" in RESPONSE) {
+        RemoveJWT();
+        window.location.href = "/login";
+        return;
+      }
+      SetGamesList(RESPONSE);
+    };
+    GetData();
   }, []);
   return (
     // Games Page Main Container
@@ -71,7 +74,7 @@ function BacklogPage() {
               {/* Game Log Card Image */}
               <Image
                 src={
-                  game.game.cover !== null
+                  game.game.cover !== "cargando"
                     ? `https://images.igdb.com/igdb/image/upload/t_original/${game.game.cover}`
                     : "/skeletons/cover.webp"
                 }
@@ -87,9 +90,13 @@ function BacklogPage() {
                 {/* Achievement Backlog Card Badge */}
                 <BacklogCardBadge
                   title="Logro"
-                  value={game.achievement.name}
+                  value={
+                    game.achievement !== null
+                      ? game.achievement.name
+                      : "Cargando..."
+                  }
                   logo={
-                    game.achievement.logo !== null ? (
+                    game.achievement !== null ? (
                       <NextImage
                         src={
                           game.achievement.logo !== "playing"
@@ -115,7 +122,11 @@ function BacklogPage() {
                   logo={
                     <NextImage
                       src="/favicon.svg"
-                      alt={`${game.achievement.name} Trophy Logo`}
+                      alt={`${
+                        game.achievement !== null
+                          ? game.achievement.name
+                          : "Loading"
+                      } Trophy Logo`}
                       width={52}
                       height={52}
                       className="my-[5px] w-[52px] h-[52px]"

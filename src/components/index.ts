@@ -8,7 +8,6 @@ export { default as Modal } from "./modal";
 export { default as Nav } from "./nav";
 export { default as NotFound } from "./not-found";
 export { default as ProfileSection } from "./profile-section";
-export { default as Search } from "./search";
 export { default as Slider } from "./slider";
 export { default as Stars } from "./stars";
 export { default as YoutubeVideo } from "./youtube-video";

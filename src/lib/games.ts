@@ -1,8 +1,4 @@
 // Games Library Requirements
-import gamesList from "@/db/games.json";
-import themesList from "@/db/themes.json";
-import genresList from "@/db/genres.json";
-import platformsList from "@/db/platforms.json";
 import { ErrorResponse, GameResponse, MinimalGameResponse } from "./types";
 import { API } from "./admin";
 // Find Top 100 Games Function
@@ -10,12 +6,6 @@ export async function FindTop100Games(): Promise<MinimalGameResponse[]> {
   return await fetch(`${API}/games`, {
     method: "GET",
   }).then((response) => response.json());
-}
-// Find Top 30 Games by Name Function
-export function FindGameByName(name: string) {
-  return gamesList
-    .filter((game) => game.name.toLowerCase().includes(name.toLowerCase()))
-    .slice(0, 30);
 }
 // Find Games by Slug Function
 export async function FindGameBySlug(
@@ -33,27 +23,6 @@ export async function FindGameBySlug(
   // If Response is 200, return it as Game Response
   return DATA as GameResponse;
 }
-// Find Themes from Game with ids list Function
-export function FindThemesFromGame(themesIdsList: number[]) {
-  return themesList
-    .filter((theme) => themesIdsList.includes(theme.id))
-    .map((theme) => theme.name)
-    .join(", ");
-}
-// Find Genres from Game with ids list Function
-export function FindGenresFromGame(genresIdsList: number[]) {
-  return genresList
-    .filter((genre) => genresIdsList.includes(genre.id))
-    .map((genre) => genre.name)
-    .join(", ");
-}
-// Find Platforms from Game with ids list Function
-export function FindPlatformsFromGame(platformsIdsList: number[]) {
-  return platformsList
-    .filter((platform) => platformsIdsList.includes(platform.id))
-    .map((platform) => platform.name)
-    .join(", ");
-}
 // Find Recommendations from Game with ids list Function
 export async function FindRecomendationsFromGame(
   slug: string
@@ -69,10 +38,6 @@ export async function FindRecomendationsFromGame(
   }
   // If Response is 200, return it as Minimal Game Response Array
   return DATA as MinimalGameResponse[];
-}
-// Find Games By Slugs with ids list Function
-export function FindGamesBySlugIds(slugsList: string[]) {
-  return gamesList.filter((game) => slugsList.includes(game.slug));
 }
 // Find the Top 100 Games by Filters Function
 export async function FindGamesByFilters(

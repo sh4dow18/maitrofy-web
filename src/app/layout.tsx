@@ -64,7 +64,7 @@ export default function RootLayout({
             . Todos los Derechos Reservados.
           </p>
           {/* Last Update */}
-          <p className="text-xs sm:order-1 md:text-sm">05 de Agosto del 2025</p>
+          <p className="text-xs sm:order-1 md:text-sm">23 de Agosto del 2025</p>
         </footer>
       </body>
     </html>

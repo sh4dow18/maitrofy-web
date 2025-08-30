@@ -67,6 +67,7 @@ function BacklogOverviewPage() {
         developer={log.game.developer}
         gameMode={log.game.gameMode}
         trailer={log.game.video}
+        slug={log.game.slug}
         log={{
           achievement:
             log.achievement != null

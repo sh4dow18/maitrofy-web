@@ -138,7 +138,10 @@ function GameOverview({
     },
     {
       title: "Plataforma",
-      value: log !== undefined ? log.platform : "",
+      value:
+        log !== undefined && log.platform !== null
+          ? log.platform
+          : "No Seleccionada",
       logo: (
         <NextImage
           src="/favicon.svg"
@@ -151,17 +154,19 @@ function GameOverview({
     },
     {
       title: "Registrado",
-      value: log !== undefined ? log.date : "",
+      value: log !== undefined ? log.date : "--/--/----",
       logo: <CalendarDaysIcon className="w-12 fill-green-200" />,
     },
     {
       title: "Valoración",
-      value: log !== undefined ? `${log.rating} Estrellas` : "",
+      value: `${
+        log !== undefined && log.rating !== null ? log.rating : "-"
+      } Estrellas`,
       logo: <StarIcon className="w-12 fill-yellow-200" />,
     },
     {
       title: "Tiempo",
-      value: log !== undefined ? `${log.time} Horas` : "",
+      value: `${log !== undefined && log.time !== null ? log.time : "0"} Horas`,
       logo: <ClockIcon className="w-12 fill-gray-200" />,
     },
   ];

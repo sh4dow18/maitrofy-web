@@ -3,7 +3,7 @@
 /* Tailwind Variables */
 @theme {
   --font-inter: inter;
-  --color-primary: #dB2b2f;
+  --color-primary: #db2b2f;
   --color-primary-light: #f75a5d;
 }
 /* Inter Font */
@@ -19,4 +19,11 @@
 input:-webkit-autofill {
   -webkit-text-fill-color: white;
   transition: background-color 5000s ease-in-out 0s;
+}
+/* Change Calendar Color in Input Date */
+input[type="date"] {
+  color: #99a1af;
+}
+input[type="date"]::-webkit-calendar-picker-indicator {
+  filter: invert(1);
 }

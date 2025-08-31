@@ -93,21 +93,27 @@ function BacklogPage() {
                   value={
                     game.achievement !== null
                       ? game.achievement.name
+                      : game.slug !== "cargando"
+                      ? "No Posee"
                       : "Cargando..."
                   }
                   logo={
-                    game.achievement !== null ? (
+                    game.slug !== "cargando" ? (
                       <NextImage
                         src={
-                          game.achievement.logo !== "playing"
+                          game.achievement !== null
                             ? `/achievements/${game.achievement.logo}.svg`
                             : "/favicon.svg"
                         }
-                        alt={`${game.achievement.name} Logo`}
+                        alt={`${
+                          game.achievement != null
+                            ? game.achievement.name
+                            : "Playing"
+                        } Logo`}
                         width={42}
-                        height={game.achievement.logo !== "playing" ? 52 : 42}
+                        height={game.achievement !== null ? 52 : 42}
                         className={`w-[42px] ${
-                          game.achievement.logo !== "playing"
+                          game.achievement !== null
                             ? "h-[52px]"
                             : "h-[42px] my-[5px]"
                         }`}
@@ -118,14 +124,14 @@ function BacklogPage() {
                 {/* Platform Backlog Card Badge */}
                 <BacklogCardBadge
                   title="Plataforma"
-                  value={game.platform}
+                  value={game.platform !== null ? game.platform : "No Seleccionada"}
                   logo={
                     <NextImage
                       src="/favicon.svg"
                       alt={`${
                         game.achievement !== null
                           ? game.achievement.name
-                          : "Loading"
+                          : "Playing"
                       } Trophy Logo`}
                       width={52}
                       height={52}

@@ -2,7 +2,6 @@
 import {
   CalendarDaysIcon,
   ClockIcon,
-  PlusIcon,
   StarIcon,
   UserGroupIcon,
 } from "@heroicons/react/16/solid";
@@ -13,6 +12,7 @@ import { FaBook, FaPerson } from "react-icons/fa6";
 import { MdFactory } from "react-icons/md";
 import { GiJumpAcross } from "react-icons/gi";
 import { AiFillExperiment } from "react-icons/ai";
+import AddGameLogButton from "./add-game-log-button";
 // Game Overview Props
 interface Props {
   title: string;
@@ -28,6 +28,7 @@ interface Props {
   developer: string;
   gameMode: string | null | undefined;
   trailer: string | null;
+  slug: string;
   log?: {
     date: string;
     achievement: {
@@ -56,6 +57,7 @@ function GameOverview({
   developer,
   gameMode,
   trailer,
+  slug,
   log,
 }: Props) {
   // Game Overview Constants
@@ -136,7 +138,10 @@ function GameOverview({
     },
     {
       title: "Plataforma",
-      value: log !== undefined ? log.platform : "",
+      value:
+        log !== undefined && log.platform !== null
+          ? log.platform
+          : "No Seleccionada",
       logo: (
         <NextImage
           src="/favicon.svg"
@@ -149,17 +154,19 @@ function GameOverview({
     },
     {
       title: "Registrado",
-      value: log !== undefined ? log.date : "",
+      value: log !== undefined ? log.date : "--/--/----",
       logo: <CalendarDaysIcon className="w-12 fill-green-200" />,
     },
     {
       title: "Valoración",
-      value: log !== undefined ? `${log.rating} Estrellas` : "",
+      value: `${
+        log !== undefined && log.rating !== null ? log.rating : "-"
+      } Estrellas`,
       logo: <StarIcon className="w-12 fill-yellow-200" />,
     },
     {
       title: "Tiempo",
-      value: log !== undefined ? `${log.time} Horas` : "",
+      value: `${log !== undefined && log.time !== null ? log.time : "0"} Horas`,
       logo: <ClockIcon className="w-12 fill-gray-200" />,
     },
   ];
@@ -202,13 +209,12 @@ function GameOverview({
           <div className="mt-auto">
             {log === undefined ? (
               // Add Log Button
-              <button
-                className="flex gap-1 items-center justify-center bg-gray-400 text-xl py-2 px-5 rounded-sm text-gray-900 font-semibold w-full"
-                disabled
-              >
-                <PlusIcon className="w-6 h-6" />
-                <span>Agregar</span>
-              </button>
+              <AddGameLogButton
+                game={{
+                  slug: slug,
+                  name: title,
+                }}
+              />
             ) : (
               // Achievement Display Container
               <div className="flex place-content-center place-items-center gap-2 bg-gray-800 rounded-md px-2 shadow shadow-gray-300/50 p-1">

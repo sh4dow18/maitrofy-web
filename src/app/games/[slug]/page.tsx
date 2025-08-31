@@ -48,6 +48,7 @@ async function GameContentPage({ params }: Props) {
         developer={CONTENT.developer}
         gameMode={CONTENT.gameMode}
         trailer={CONTENT.video}
+        slug={CONTENT.slug}
       />
       {!("status" in RECOMENDATIONS_LIST) && RECOMENDATIONS_LIST.length > 0 && (
         <Slider title="Recomendaciones" contentList={RECOMENDATIONS_LIST} />

@@ -7,3 +7,11 @@ export async function FindAllPlatforms(): Promise<PlatformResponse[]> {
     method: "GET",
   }).then((response) => response.json());
 }
+// Find All Game Platform Function
+export async function FindAllGamePlatforms(
+  slug: string
+): Promise<PlatformResponse[]> {
+  return await fetch(`${API}/platforms/game/${slug}`, {
+    method: "GET",
+  }).then((response) => response.json());
+}

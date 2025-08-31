@@ -8,7 +8,7 @@ interface Props {
   label: string;
   placeholder: string;
   name: string;
-  validation: "email" | "password" | "text";
+  validation: "email" | "password" | "text" | "int" | "1to10";
   help?: string;
   disabled?: boolean;
   autoComplete?: string;
@@ -27,6 +27,12 @@ const REGEX: Record<string, RegExp> = {
   // Only Readable Text
   // Example: Ramsés or Juan Tamarindo or Pepelefu
   text: /^[a-zA-Z0-9ÁÉÍÓÚÑáéíóúñ ]+$/,
+  // Only Integer Numbers
+  // Example: 8000 or 9502
+  int: /^\d+$/,
+  // Only Integer Numbers from 1 to 10
+  // Example: 1 or 10
+  "1to10": /^(10|[1-9])$/,
 };
 // Input Main Function
 function Input({

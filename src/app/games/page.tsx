@@ -160,18 +160,21 @@ function GamesPage() {
                 label="Tema"
                 name="theme"
                 optionsList={formLists.themesList}
+                restricWidth
               />
               {/* Genre Select */}
               <Select
                 label="Género"
                 name="genre"
                 optionsList={formLists.genresList}
+                restricWidth
               />
               {/* Platform Select */}
               <Select
                 label="Plataforma"
                 name="platform"
                 optionsList={formLists.platformsList}
+                restricWidth
               />
               {/* Form Buttons Container */}
               <div className="flex gap-3 w-full min-[765px]:w-fit">

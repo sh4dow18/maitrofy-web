@@ -48,7 +48,7 @@ export async function GetUserBacklog(): Promise<
   return DATA as MinimalGameLogResponse[];
 }
 // Find User Game Log
-export async function FindUserLog(
+export async function FindUserGameLog(
   slug: string
 ): Promise<GameLogResponse | ErrorResponse> {
   const RESPONSE = await fetch(`${API}/gameLogs/user/${slug}`, {

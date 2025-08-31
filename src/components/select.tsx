@@ -11,9 +11,18 @@ interface Props {
   help?: string;
   multiple?: boolean;
   disabled?: boolean;
+  restricWidth?: boolean;
 }
 // Select Main Function
-function Select({ name, label, optionsList, help, multiple, disabled }: Props) {
+function Select({
+  name,
+  label,
+  optionsList,
+  help,
+  multiple,
+  disabled,
+  restricWidth,
+}: Props) {
   // Select hooks
   const selectRef = useRef<HTMLSelectElement | null>(null);
   const [state, SetState] = useState<"Valid" | "Neutral">("Neutral");
@@ -30,7 +39,11 @@ function Select({ name, label, optionsList, help, multiple, disabled }: Props) {
   // Returns Select Component
   return (
     // Select Container
-    <div className="flex flex-col gap-1 w-full min-[765px]:w-40">
+    <div
+      className={`flex flex-col gap-1 w-full ${
+        restricWidth === true ? "min-[765px]:w-40" : ""
+      }`.trimEnd()}
+    >
       {/* Select Label */}
       <label
         htmlFor={name}

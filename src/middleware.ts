@@ -11,6 +11,7 @@ export async function middleware(request: NextRequest) {
     PAGE_NAME.includes("/backlog") ||
     PAGE_NAME === "/login" ||
     PAGE_NAME === "/profile" ||
+    PAGE_NAME === "/admin" ||
     PAGE_NAME === "/error"
   ) {
     // Check if the API is up
@@ -23,8 +24,7 @@ export async function middleware(request: NextRequest) {
         signal: CONTROLLER.signal,
       });
       apiOk = RESPONSE.ok;
-    }
-    catch {
+    } catch {
       apiOk = false;
     } finally {
       clearTimeout(TIMEOUT);
@@ -41,7 +41,11 @@ export async function middleware(request: NextRequest) {
   // If JWT is undefined
   if (TOKEN === undefined) {
     // If the page is profile page or a backlog page, redirect to login page
-    if (PAGE_NAME === "/profile" || PAGE_NAME.startsWith("/backlog") === true) {
+    if (
+      PAGE_NAME === "/profile" ||
+      PAGE_NAME.startsWith("/backlog") === true ||
+      PAGE_NAME === "/admin"
+    ) {
       return NextResponse.redirect(new URL("/login", request.url));
     }
   }

@@ -1,3 +1,5 @@
+// Components Barrel
+export { default as AddGameLogButton } from "./add-game-log-button";
 export { default as BacklogCardBadge } from "./backlog-card-badge";
 export { default as DateInput } from "./date-input";
 export { default as Form } from "./form";

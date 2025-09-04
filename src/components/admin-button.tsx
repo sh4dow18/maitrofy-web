@@ -64,7 +64,7 @@ function AdminButton({
   return (
     <>
       {/* Admin Button Main Container */}
-      <div className="flex flex-col gap-5 place-items-center text-center bg-gray-800 rounded-lg p-6 md:flex-row md:place-content-between">
+      <div className="flex flex-col gap-5 place-items-center text-center bg-gray-900 border-b border-gray-400/70 rounded-lg p-6 md:flex-row md:place-content-between">
         {/* Admin Button Main Information Container */}
         <div className="flex flex-col gap-2 text-left">
           {/* Admin Button Main Information Title */}

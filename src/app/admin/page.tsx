@@ -1,11 +1,11 @@
 // Set this page as a client page
 "use client";
 // Admin Page Requirements
-import { AdminButton } from "@/components";
+import { AdminButton, AdminForm, Input } from "@/components";
 import { API } from "@/lib/admin";
 import { GetJWT, RemoveJWT } from "@/lib/session";
 import { CheckAuth } from "@/lib/utils";
-import { useEffect, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 // Admin Page Main Page
 function AdminPage() {
   // Admin Page Constants
@@ -125,6 +125,17 @@ function AdminPage() {
       },
     });
   };
+  // Function that allow to insert a game from IGDB
+  const InsertGameOnSubmit = async (event: FormEvent<HTMLFormElement>) => {
+    const FORM = event.target as HTMLFormElement;
+    return await fetch(`${API}/games/${FORM.slug.value}`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${GetJWT()}`,
+      },
+    });
+  };
   // Return Admin Page
   return (
     // Admin Page Main Container
@@ -174,6 +185,7 @@ function AdminPage() {
         <div className="min-[580px]:overflow-y-auto">
           {/* Admin Page Themes Section */}
           {submenuActive.key === "themes" && (
+            // Insert Themes Button
             <AdminButton
               name="Insertar Temas"
               description="Insertar Información Actualizada de Todos los Temas del Sistema"
@@ -188,6 +200,7 @@ function AdminPage() {
           )}
           {/* Admin Page Genres Section */}
           {submenuActive.key === "genres" && (
+            // Insert Genres Button
             <AdminButton
               name="Insertar Géneros"
               description="Insertar Información Actualizada de Todos los Géneros del Sistema"
@@ -202,6 +215,7 @@ function AdminPage() {
           )}
           {/* Admin Page Platforms Section */}
           {submenuActive.key === "platforms" && (
+            // Insert Platforms Button
             <AdminButton
               name="Insertar Plataformas"
               description="Insertar Información Actualizada de Todos las Plataformas del Sistema"
@@ -212,21 +226,45 @@ function AdminPage() {
           )}
           {/* Admin Page Games Section */}
           {submenuActive.key === "games" && (
-            <AdminButton
-              name="Insertar Juegos"
-              description="Insertar Información Actualizada de Todos los Juegos del Sistema"
-              buttonName="Agregar Juegos"
-              OnClick={InsertAllGamesOnClick}
-              successMessage="Se han agregado todos los logros en el sistema"
-              loadingMessage="Tiempo de espera aproximado de 45 minutos por traducción de los nombres (Si se posee un buen internet)"
-              wait={{
-                time: "45 minutos",
-                reason: "Traducción de Descripciones",
-              }}
-            />
+            <div className="flex flex-col gap-3">
+              {/* Insert Games Button */}
+              <AdminButton
+                name="Insertar Juegos"
+                description="Insertar Información Actualizada de Todos los Juegos del Sistema"
+                buttonName="Agregar Juegos"
+                OnClick={InsertAllGamesOnClick}
+                successMessage="Se han agregado todos los logros en el sistema"
+                loadingMessage="Tiempo de espera aproximado de 45 minutos por traducción de los nombres (Si se posee un buen internet)"
+                wait={{
+                  time: "45 minutos",
+                  reason: "Traducción de Descripciones",
+                }}
+              />
+              {/* Insert Game Form */}
+              <AdminForm
+                title="Insertar un Juego"
+                description="Inserta la información actualizada de un Juego Específico de IGDB en el Sistema"
+                submitButton="Agregar Juego"
+                OnSubmit={InsertGameOnSubmit}
+                messages={{
+                  success: "Se ha Insertado el Juego en el Sistema con Éxito",
+                  loading: "Insertando Juego...",
+                }}
+              >
+                {/* Slug Input */}
+                <Input
+                  label="Slug del juego"
+                  name="slug"
+                  validation="slug"
+                  placeholder="the-last-of-us"
+                  help="Identificador en la URL del juego en IGDB"
+                />
+              </AdminForm>
+            </div>
           )}
           {/* Admin Page Achievement Section */}
           {submenuActive.key === "achievements" && (
+            // Insert Achievements Button
             <AdminButton
               name="Insertar Logros"
               description="Insertar Información Actualizada de Todos los Logros del Sistema"
@@ -237,6 +275,7 @@ function AdminPage() {
           )}
           {/* Admin Page Privileges Section */}
           {submenuActive.key === "privileges" && (
+            // Insert Privileges Button
             <AdminButton
               name="Insertar Privilegios"
               description="Insertar Información Actualizada de Todos los Privilegios del Sistema"
@@ -247,6 +286,7 @@ function AdminPage() {
           )}
           {/* Admin Page Roles Section */}
           {submenuActive.key === "roles" && (
+            // Insert Roles Button
             <AdminButton
               name="Insertar Roles"
               description="Insertar Información Actualizada de Todos los Roles del Sistema"

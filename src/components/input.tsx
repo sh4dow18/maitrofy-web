@@ -8,7 +8,7 @@ interface Props {
   label: string;
   placeholder: string;
   name: string;
-  validation: "email" | "password" | "text" | "int" | "1to10";
+  validation: "email" | "password" | "text" | "int" | "1to10" | "slug";
   help?: string;
   disabled?: boolean;
   autoComplete?: string;
@@ -33,6 +33,9 @@ const REGEX: Record<string, RegExp> = {
   // Only Integer Numbers from 1 to 10
   // Example: 1 or 10
   "1to10": /^(10|[1-9])$/,
+  // Only Slugs
+  // Example: the-last-of-us or hollow-knight
+  slug: /^[a-z0-9]+(?:-[a-z0-9]+)*$/
 };
 // Input Main Function
 function Input({

@@ -23,7 +23,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 }
 // Backlog Layout Main Function
-export default function ProfileLayout({
+export default function SpecificBacklogLayout({
   children,
 }: {
   children: React.ReactNode;

@@ -6,7 +6,7 @@ export const metadata: Metadata = {
   description: "Aquí se encuentran los juegos disponibles en Maitrofy",
 };
 // Games Layout Main Function
-export default function ProfileLayout({
+export default function GamesLayout({
   children,
 }: {
   children: React.ReactNode;

@@ -6,7 +6,7 @@ export const metadata: Metadata = {
   description: "Aquí se podrá ver toda la trayectoria de Juegos que tenga el usuario logueado",
 };
 // Backlog Layout Main Function
-export default function ProfileLayout({
+export default function BacklogLayout({
   children,
 }: {
   children: React.ReactNode;
